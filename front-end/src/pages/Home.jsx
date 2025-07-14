@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { SkeletonHome } from "./skeletons/SkeletonHome";
 import { useLoad } from "../hooks/useLoad";
 
-export function Home() {
+export default function Home() {
     const { randomProds } = useData()
 
     const { loading } = useLoad()

@@ -2,7 +2,7 @@ import { useCartContext } from "../context/cartContext"
 import { SkeletonCart } from "./skeletons/SkeletonCart";
 import { useLoad } from "../hooks/useLoad";
 
-export function Cart() {
+export default function Cart() {
     const { cartProducts, addToCart, removeFromCart, resetCart, buyProducts } = useCartContext()
 
     const totalItems = cartProducts.reduce((sum, item) => sum + item.quantity, 0);

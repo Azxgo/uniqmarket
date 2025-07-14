@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { useAuthContext } from "../../context/authContext";
 import { useLocation } from "react-router-dom";
 
-export function Register() {
+export default function Register() {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
-    const { register} = useAuthContext();
+    const { register } = useAuthContext();
 
 
     const handleSubmit = async (e) => {
@@ -70,7 +70,7 @@ export function Register() {
                     className="bg-zinc-800 text-white p-2 rounded-md hover:bg-zinc-700 cursor-pointer"
                     disabled={loading}
                 >
-                    {loading ? "Registrando..." :"Crear Cuenta"}
+                    {loading ? "Registrando..." : "Crear Cuenta"}
                 </button>
             </form>
             <title>Registro - Uniqmarket</title>

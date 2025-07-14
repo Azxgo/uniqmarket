@@ -5,7 +5,7 @@ import { SkeletonProductPage } from "./skeletons/SkeletonProductPage";
 import { useLoad } from "../hooks/useLoad";
 import { useEffect } from "react";
 
-export function ProductPage() {
+export default function ProductPage() {
     const { products } = useData()
     const { id } = useParams()
     const { addToCart } = useCartContext();

@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useFilters } from "../hooks/useFilters";
+import { useLoad } from "../hooks/useLoad";
 import { Paginacion } from "../components/Paginacion";
 import { FilterMarca } from "../components/FilterMarca";
 import { FilterPrecio } from "../components/FilterPrecio";
 import { Sort } from "../components/Sort";
 import { Spinner } from "../components/Spinner";
 import { SkeletonShop } from "./skeletons/SkeletonShop";
-import { useLoad } from "../hooks/useLoad";
 
-export function Shop() {
+
+export default function Shop() {
     const { name } = useParams();
     const { loading } = useLoad()
     const [searchParams, setSearchParams] = useSearchParams()
