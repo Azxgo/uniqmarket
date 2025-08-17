@@ -15,8 +15,9 @@ export const getAll = async (req, res) => {
 
 export const getCategories = async (req, res) => {
     try {
-        const [rows] = await pool.execute(`
-            SELECT * from categories`);
+        const [rows] = await pool.execute(
+            `SELECT * from categories`
+        );
         res.json(rows)
     } catch (e) {
         res.status(500).json({ e: 'Error al obtener categorias' });
@@ -26,9 +27,7 @@ export const getCategories = async (req, res) => {
 export const get5RandomProducts = async (req, res) => {
     try {
         const [rows] = await pool.execute(
-            `SELECT * FROM products
-            ORDER BY RAND()
-            LIMIT 5`
+            `SELECT * FROM products ORDER BY RAND() LIMIT 5`
         );
         res.json(rows)
     } catch (e) {

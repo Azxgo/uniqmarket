@@ -63,8 +63,8 @@ export const removeFromCart = async (req, res) => {
             )
         }
         res.json({ success: true, message: "Cantidad actualizada correctamente" });
-    } catch (error) {
-        console.error("Error al reducir cantidad:", error);
+    } catch (e) {
+        console.error("Error al reducir cantidad:", e);
         res.status(500).json({ error: "Error al reducir cantidad del producto" });
     }
 }
@@ -104,9 +104,9 @@ export const resetCart = async (req, res) => {
         } else {
             return res.status(400).json({ error: "No hay productos en el carrito" });
         }
-    } catch (error) {
-        console.error("Error al resetear el carrito:", error);
-        return res.status(500).json({ error: "Error del servidor al resetear el carrito." });
+    } catch (e) {
+        console.error("Error al resetear el carrito:", e);
+        return res.status(500).json({ e: "Error del servidor al resetear el carrito." });
     }
 }
 
@@ -120,8 +120,9 @@ export const buyProducts = async (req, res) => {
         await connection.beginTransaction();
 
         const [items] = await connection.execute(
-            `SELECT * FROM cart_items
-             WHERE ${userId ? "user_id = ?" : "session_id = ?"}`,
+            `SELECT ci.*, p.price FROM cart_items ci
+            JOIN products p ON ci.product_id = p.product_id
+            WHERE ${userId ? "user_id = ?" : "session_id = ?"}`,
             [userId || sessionId]
         );
 
@@ -149,6 +150,22 @@ export const buyProducts = async (req, res) => {
             await connection.execute(
                 `UPDATE products SET stock = stock - ? WHERE product_id = ?`,
                 [item.quantity, item.product_id]
+            );
+        }
+
+        const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0)
+
+        const [orderResult] = await connection.execute(
+            `INSERT INTO buy_orders (user_id, status, total) VALUES (?, 'pending', ?)`,
+            [userId, total]
+        )
+
+        const orderId = orderResult.insertId
+
+        for (const item of items) {
+            await connection.execute(
+                `INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)`,
+                [orderId, item.product_id, item.quantity, item.price]
             );
         }
 

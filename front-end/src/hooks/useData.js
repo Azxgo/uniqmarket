@@ -30,7 +30,5 @@ export function useData() {
     }, []);
 
 
-
-
     return { products, categories, randomProds };
 }

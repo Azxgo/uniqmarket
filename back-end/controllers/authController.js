@@ -22,8 +22,8 @@ export const register = async (req, res) => {
         );
 
         return res.status(201).json({ status: "ok", message: "Usuario registrado correctamente" });
-    } catch (err) {
-        console.error(err);
+    } catch (e) {
+        console.error(e);
         return res.status(500).json({ status: "Error", message: "Error en el servidor" });
     }
 }
@@ -64,36 +64,19 @@ export const login = async (req, res) => {
         const userId = userData[0].user_id;
 
         if (sessionId !== null) {
-            const [items] = await pool.execute(
-                "SELECT product_id, quantity FROM cart_items WHERE session_id = ?",
-                [sessionId]
+            await pool.execute(
+                `INSERT INTO cart_items (product_id, user_id, quantity)
+                SELECT ci.product_id, ?, ci.quantity
+                FROM cart_items ci
+                WHERE ci.session_id = ? AND ci.user_id IS NULL
+                ON DUPLICATE KEY UPDATE quantity = cart_items.quantity + VALUES(quantity)`,
+                [userId, sessionId]
             );
-
-            for (const item of items) {
-                const [existing] = await pool.execute(
-                    "SELECT id FROM cart_items WHERE user_id = ? AND product_id = ?",
-                    [userId, item.product_id]
-                );
-
-                if (existing.length > 0) {
-                    await pool.execute(
-                        "UPDATE cart_items SET quantity = quantity + ? WHERE id = ?",
-                        [item.quantity, existing[0].id]
-                    );
-                } else {
-                    await pool.execute(
-                        "INSERT INTO cart_items (user_id, session_id, product_id, quantity) VALUES (?, ?, ?, ?)",
-                        [userId, null, item.product_id, item.quantity]
-                    );
-                }
-            }
 
             await pool.execute(
-                "DELETE FROM cart_items WHERE session_id = ?",
+                "DELETE FROM cart_items WHERE session_id = ? AND user_id IS NULL",
                 [sessionId]
             );
-
-            res.clearCookie("cart_session_id");
         }
 
         return res.status(200).json({
@@ -101,8 +84,8 @@ export const login = async (req, res) => {
             message: "Inicio de sesión exitoso",
             user: userData[0].name
         });
-    } catch (err) {
-        console.error('Error en el login:', err.message);
+    } catch (e) {
+        console.error('Error en el login:', e.message);
         return res.status(500).json({ status: "Error", message: "Error en el servidor" });
     }
 }
@@ -119,19 +102,28 @@ export const logout = async (req, res) => {
     res.json("Sesión cerrada");
 }
 
-export const verify = (req, res) => {
+export const verify = async (req, res) => {
     const token = req.cookies.token;
-    if (!token) {
-        // Respondemos 200 con authenticated: false en lugar de 401
-        return res.json({ authenticated: false });
-    }
+    if (!token) return res.json({ authenticated: false });
 
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-        if (err) {
-            // Igual respondemos 200 con authenticated: false
-            return res.json({ authenticated: false });
-        }
-        // Usuario autenticado: enviamos username y authenticated true
-        res.json({ authenticated: true, username: decoded.username });
-    });
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        const [userRows] = await pool.execute(
+            "SELECT role FROM users WHERE name = ?",
+            [decoded.username]
+        );
+
+        if (userRows.length === 0) return res.json({ authenticated: false });
+
+        res.json({
+            authenticated: true,
+            username: decoded.username,
+            role: userRows[0].role
+        });
+
+    } catch (err) {
+        console.error(err);
+        res.json({ authenticated: false });
+    }
 };
