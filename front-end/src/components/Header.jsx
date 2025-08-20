@@ -6,9 +6,12 @@ import { useAuthContext } from "../context/authContext";
 import { Link } from "react-router-dom";
 import { useState } from "react"
 import { AccesioriosIcon, AlimentosIcon, AllProductsIcon, ColecciónIcon, HogarIcon, LiteraturaIcon, MascotaIcon, MisceláneoIcon, ModaIcon, MusicaIcon, TecnologíaIcon } from "../icons/CategoryIcons";
+import { useData } from "../hooks/useData";
+import { categoryIcons } from "../utils/categoryIcons";
 
 export function Header() {
     const { user, logout, loading } = useAuthContext()
+    const { categories } = useData()
 
     const [isOpen, setIsOpen] = useState(false)
 
@@ -67,84 +70,27 @@ export function Header() {
                 className={`fixed top-[75px] w-full max-h-60 bg-gray-50 transition-all duration-300 ease-in-out z-50
                 ${isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
             >
-                <div className="flex flex-wrap overflow-x-auto py-4 px-10 gap-12 h-full justify-between bg-white m-2 rounded-md shadow-md ">
+                <div className="flex flex-wrap overflow-x-auto py-4 px-10 gap-12 h-full bg-white m-2 rounded-md shadow-md ">
                     <ul className="min-w-max space-y-1 text-sm sm:text-base">
-                        <li>
+                        <li className="">
                             <a className="flex gap-2 p-2 rounded-md hover:bg-gray-50" href="/shop">
                                 <AllProductsIcon />
                                 <h1>Todos los productos</h1>
                             </a>
                         </li>
                     </ul>
-                    <ul className="min-w-max text-sm sm:text-base">
-                        <li>
-                            <a className="flex gap-2 p-2 rounded-md hover:bg-gray-50" href="/shop/accesorios">
-                                <AccesioriosIcon />
-                                <h1>Accesorios</h1>
-                            </a>
-                        </li>
-                        <li>
-                            <a className="flex gap-2 p-2 rounded-md hover:bg-gray-50" href="/shop/alimentos">
-                                <AlimentosIcon />
-                                <h1>Alimentos</h1>
-                            </a>
-                        </li>
-                    </ul>
-                    <ul className="min-w-max text-sm sm:text-base">
-                        <li>
-                            <a className="flex gap-2 p-2 rounded-md hover:bg-gray-50" href="/shop/colección">
-                                <ColecciónIcon />
-                                <h1>Colección</h1>
-                            </a>
-                        </li>
-                        <li>
-                            <a className="flex gap-2 p-2 rounded-md hover:bg-gray-50" href="/shop/hogar">
-                                <HogarIcon />
-                                <h1>Hogar</h1>
-                            </a>
-                        </li>
-                    </ul>
-                    <ul className="min-w-max text-sm sm:text-base">
-                        <li>
-                            <a className="flex gap-2 p-2 rounded-md hover:bg-gray-50" href="/shop/literatura">
-                                <LiteraturaIcon />
-                                <h1>Literatura</h1>
-                            </a>
-                        </li>
-                        <li>
-                            <a className="flex gap-2 p-2 rounded-md hover:bg-gray-50" href="/shop/mascotas">
-                                <MascotaIcon />
-                                <h1>Mascotas</h1>
-                            </a>
-                        </li>
-                    </ul>
-                    <ul className="min-w-max text-sm sm:text-base">
-                        <li>
-                            <a className="flex gap-2 p-2 rounded-md hover:bg-gray-50" href="/shop/misceláneo">
-                                <MisceláneoIcon />
-                                <h1>Misceláneo</h1>
-                            </a>
-                        </li>
-                        <li>
-                            <a className="flex gap-2 p-2 rounded-md hover:bg-gray-50" href="/shop/moda">
-                                <ModaIcon />
-                                <h1>Moda</h1>
-                            </a>
-                        </li>
-                    </ul>
-                    <ul className="min-w-max text-sm sm:text-base">
-                        <li>
-                            <a className="flex gap-2 p-2 rounded-md hover:bg-gray-50" href="/shop/música">
-                                <MusicaIcon />
-                                <h1>Música</h1>
-                            </a>
-                        </li>
-                        <li>
-                            <a className="flex gap-2 p-2 rounded-md hover:bg-gray-50" href="/shop/tecnología">
-                                <TecnologíaIcon />
-                                <h1>Tecnología</h1>
-                            </a>
-                        </li>
+                    <ul className="grid grid-cols-1 sm:grid-cols-5 gap-x-25 text-sm sm:text-base">
+                        {categories.map((cat, i) => {
+                            const IconComponent = categoryIcons[cat.name] || MisceláneoIcon;
+                            return (
+                                <li key={i}>
+                                    <a className="flex gap-2 p-2 rounded-md hover:bg-gray-50 w-[140px]" href={`/shop/${cat.name.toLowerCase()}`}>
+                                        <IconComponent size={24} className="w-28 h-28 text-white" />
+                                        <h1>{cat.name}</h1>
+                                    </a>
+                                </li>
+                            );
+                        })}
                     </ul>
                 </div>
             </div>

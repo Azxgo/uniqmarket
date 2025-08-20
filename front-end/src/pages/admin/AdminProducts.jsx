@@ -4,6 +4,7 @@ import { Table } from "../../components/admin/Table"
 import useAdmin from "../../hooks/admin/useAdmin"
 import { useAdminTitle } from "../../context/admin/AdminTitleContext";
 import { AdminSearchBar } from "../../components/admin/AdminSearchBar";
+import { productColumns as columns } from "../../utils/columns";
 
 export default function AdminProducts() {
     const { setTitle } = useAdminTitle()
@@ -14,11 +15,6 @@ export default function AdminProducts() {
 
     const searchProducts = products.filter((prod) =>
         prod.name.toLowerCase().includes(searchTerm.toLowerCase()))
-
-    const formatter = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-    });
 
     const deleteProduct = async (id) => {
         const res = await fetch(`http://localhost:3000/admin/products/delete/${id}`, {
@@ -32,28 +28,6 @@ export default function AdminProducts() {
             console.log("Producto eliminado");
         }
     }
-
-    const columns = [
-        {
-            label: "Nombre",
-            field: "name",
-            width: "w-[380px]",
-            sortable: true,
-            render: (p) => (
-                <div className="flex items-center gap-3">
-                    <img src={p.image_url} className="w-6 h-6 bg-gray-800 shrink-0" />
-                    <Link to={`/admin/product/${p.product_id}`} className="truncate">
-                        {p.name}
-                    </Link>
-                </div>
-            )
-        },
-        { label: "Categoría", field: "category_name", width: "w-[120px]", sortable: true, filterable: true },
-        { label: "Precio", field: "price", width: "w-[100px]", sortable: true, render: (p) => formatter.format(p.price) },
-        { label: "Vendedor", field: "vendor_name", sortable: true, filterable: true },
-        { label: "Stock", field: "stock", width: "w-[70px]", sortable: true },
-        { label: "Calificación", field: "rating", render: () => "0" },
-    ]
 
     useEffect(() => {
         setTitle("Productos");

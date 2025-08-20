@@ -28,16 +28,15 @@ export default function AdminCategories() {
 
   const handleSave = async (categoryId, newName, deletedId = null) => {
     if (deletedId) {
-      // 🔹 Eliminar categoría del estado
       setCategories((prev) => prev.filter((c) => c.category_id !== deletedId));
       return;
     }
 
     if (categoryId) {
-      // 🔹 Editar categoría (PUT)
       const res = await fetch(`http://localhost:3000/admin/category/update/${categoryId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ name: newName }),
       });
       if (res.ok) {
@@ -46,11 +45,11 @@ export default function AdminCategories() {
         );
       }
     } else {
-      // 🔹 Crear categoría (POST)
       const res = await fetch(`http://localhost:3000/admin/category/add`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: newName }),
+        credentials: "include"
       });
       if (res.ok) {
         const data = await res.json();

@@ -22,6 +22,7 @@ export default function CategoryModal({ isOpen, onClose, category, onSave }) {
         try {
             const res = await fetch(`http://localhost:3000/admin/category/delete/${category.category_id}`, {
                 method: "DELETE",
+                credentials: "include"
             });
 
             const data = await res.json();

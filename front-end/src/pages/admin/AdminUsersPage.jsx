@@ -17,7 +17,9 @@ export default function AdminUsersPage() {
 
     useEffect(() => {
         if (id) {
-            fetch(`http://localhost:3000/admin/users/get/${id}`)
+            fetch(`http://localhost:3000/admin/users/get/${id}`, {
+                credentials: "include"
+            })
                 .then(res => res.json())
                 .then(data => {
                     setFormData({
@@ -49,6 +51,7 @@ export default function AdminUsersPage() {
             headers: {
                 "Content-Type": "application/json",
             },
+            credentials: "include",
             body: JSON.stringify(formData)
         });
 

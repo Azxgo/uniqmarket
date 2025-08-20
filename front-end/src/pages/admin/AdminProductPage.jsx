@@ -21,7 +21,9 @@ export default function AdminProductPage() {
 
     useEffect(() => {
         if (id) {
-            fetch(`http://localhost:3000/admin/get/${id}`)
+            fetch(`http://localhost:3000/admin/products/get/${id}`, {
+                credentials: "include"
+            })
                 .then(res => res.json())
                 .then(data => {
                     setFormData({

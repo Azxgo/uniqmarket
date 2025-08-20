@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { useAdminTitle } from "../../context/admin/AdminTitleContext"
 import { useEffect, useState } from "react"
 
+
 export default function AdminOrdersPage() {
     const { setTitle } = useAdminTitle()
 
@@ -16,6 +17,7 @@ export default function AdminOrdersPage() {
             const res = await fetch(`http://localhost:3000/admin/orders/update/${id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
+                credentials: "include",
                 body: JSON.stringify({ status: order.status }),
             })
             if (!res.ok) throw new Error("Error al actualizar el estado");
@@ -31,7 +33,9 @@ export default function AdminOrdersPage() {
 
     useEffect(() => {
         const fetchOrder = async () => {
-            const res = await fetch(`http://localhost:3000/admin/orders/get/${id}`)
+            const res = await fetch(`http://localhost:3000/admin/orders/get/${id}`, {
+                credentials: "include"
+            })
             if (!res.ok) throw new Error("No se pudo obtener la orden")
             const data = await res.json()
             setOrder(data)

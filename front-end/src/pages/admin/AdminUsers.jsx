@@ -4,6 +4,7 @@ import useUsers from "../../hooks/admin/useUsers";
 import { Table } from "../../components/admin/Table";
 import { AdminSearchBar } from "../../components/admin/AdminSearchBar";
 import { Link } from "react-router-dom";
+import { userColumns as columns } from "../../utils/columns";
 
 export default function AdminUsers() {
     const { setTitle } = useAdminTitle()
@@ -15,10 +16,10 @@ export default function AdminUsers() {
     const searchUsers = users.filter((user) =>
         user.name.toLowerCase().includes(searchTerm.toLowerCase()))
 
-
     const deleteUser = async (id) => {
         const res = await fetch(`http://localhost:3000/admin/users/delete/${id}`, {
             method: "POST",
+            credentials: "include"
         });
 
         if (res.ok) {
@@ -27,33 +28,6 @@ export default function AdminUsers() {
             console.log("Producto eliminado");
         }
     }
-
-    const columns = [
-        {
-            label: "Nombre", field: "name", sortable: true,
-            render: (u) => (
-                <div className="flex items-center gap-3">
-                    <Link to={`/admin/user/${u.user_id}`} className="truncate">
-                        {u.name}
-                    </Link>
-                </div>
-            )
-        },
-        { label: "Email", field: "email", sortable: true },
-        { label: "Rol", field: "role", sortable: true, filterable: true },
-        {
-            label: "Creado en",
-            field: "created_at",
-            sortable: true,
-            render: (user) => new Date(user.created_at).toLocaleDateString("es-CL", {
-                day: "2-digit",
-                month: "short",
-                year: "numeric",
-                hour: "2-digit",
-                minute: "2-digit"
-            })
-        }
-    ]
 
     useEffect(() => {
         setTitle("Usuarios");
