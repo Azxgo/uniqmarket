@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useAdminTitle } from "../../context/admin/AdminTitleContext";
-import useUsers from "../../hooks/admin/useUsers";
+
 import { Table } from "../../components/admin/Table";
 import { AdminSearchBar } from "../../components/admin/AdminSearchBar";
 import { Link } from "react-router-dom";
 import { userColumns as columns } from "../../utils/columns";
+import { useUsers } from "../../hooks/admin/useUsers";
 
 export default function AdminUsers() {
     const { setTitle } = useAdminTitle()

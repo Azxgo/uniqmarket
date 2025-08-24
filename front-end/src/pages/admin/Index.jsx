@@ -1,36 +1,36 @@
-import { useEffect, useState } from "react"
-import useAdmin from "../../hooks/admin/useAdmin"
-import { Link } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect } from "react"
 import { useAdminTitle } from "../../context/admin/AdminTitleContext"
-import { MisceláneoIcon } from "../../icons/CategoryIcons";
 import { IndexCard } from "../../components/admin/IndexCard";
 import { TableMini } from "../../components/admin/TableMini";
 import { orderColumns as columns } from "../../utils/columns";
 import useOrders from "../../hooks/admin/useOrders";
-
+import { useUsers } from "../../hooks/admin/useUsers";
+import { Chart } from "../../components/admin/Chart";
 
 
 export default function Index() {
     const { setTitle } = useAdminTitle()
-    const { orders } = useOrders()
+    const { orders, totalRenueves } = useOrders()
+    const { users } = useUsers()
 
     useEffect(() => {
         setTitle("Dashboard")
     }, [])
+
     return (
         <div className="container mx-auto">
             <div className="grid grid-cols-[2fr_1fr] gap-4">
                 <div className="flex flex-col gap-4">
                     <div className="grid grid-cols-2 gap-4">
-                        <IndexCard name="Ganancias" />
-                        <IndexCard name="Ordenes" />
-                        <IndexCard name="Usuarios" />
+                        <IndexCard name="Ganancias" value={`$${totalRenueves.toFixed(2)}`} />
+                        <IndexCard name="Ordenes" value={orders.length} />
+                        <IndexCard name="Usuarios" value={users.length} />
                         <IndexCard name="Usuarios" />
                     </div>
 
-                    <div className="rounded-md bg-white p-3 h-[300px]">
-                        Aca voy a hacer un gráfico, quizá necesite instalar alguna librería
+                    <div className="flex flex-col gap-2 rounded-md bg-white p-6 h-[375px]">
+                        <h1 className="text-2xl mb-2">Historial de Ganancias</h1>
+                        <Chart orders={orders} />
                     </div>
                 </div>
 
@@ -41,7 +41,8 @@ export default function Index() {
             </div>
 
             <div className="flex mt-3">
-                <div className="flex rounded-md p-6 bg-white">
+                <div className="flex flex-col gap-2 rounded-md p-6 bg-white">
+                    <h1 className="text-2xl">Ultimas Ordenes</h1>
                     <TableMini
                         data={orders}
                         columns={columns}

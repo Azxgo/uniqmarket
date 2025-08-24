@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 export default function useOrders() {
     const [orders, setOrders] = useState([])
@@ -20,5 +20,9 @@ export default function useOrders() {
         fetchAllOrders()
     }, [])
 
-    return { orders, setOrders }
+    const totalRenueves = useMemo(() => {
+        return orders.reduce((acc, order) => acc + parseFloat(order.total || 0), 0)
+    }, [orders])
+
+    return { orders, setOrders, totalRenueves }
 }

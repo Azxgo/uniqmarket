@@ -4,6 +4,7 @@ import { useCartContext } from "../context/cartContext";
 import { SkeletonProductPage } from "./skeletons/SkeletonProductPage";
 import { useLoad } from "../hooks/useLoad";
 import { useEffect } from "react";
+import { Puntuacion } from "../components/Puntuacion";
 
 export default function ProductPage() {
     const { products } = useData()
@@ -17,7 +18,7 @@ export default function ProductPage() {
     useEffect(() => {
         if (prod?.name) {
             document.title = `${prod.name} - Uniqmarket`;
-        } 
+        }
     }, [prod]);
 
     if (loading) {
@@ -40,7 +41,7 @@ export default function ProductPage() {
                     <span className="text-gray-400">SKU: {prod.sku}</span>
                     <h2 className="font-bold text-[30px]">${prod.price}</h2>
                     <p className="text-[20px]">Vendido por: {prod.vendor_name}</p>
-                    <h4>XD</h4>
+                    <Puntuacion />
                     <button className="rounded-lg w-full bg-zinc-900 hover:bg-zinc-700 my-2 p-3 text-white cursor-pointer"
                         onClick={() => addToCart(prod)}
                     >

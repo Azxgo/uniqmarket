@@ -1,8 +1,8 @@
 export function TableMini({data, columns}) {
 
     return (
-        <div className="overflow-x-auto">
-            <table className="table-fixed w-full text-left divide-y divide-gray-500/20 bg-white rounded-md">
+        <div className="overflow-x-auto rounded-lg p-4 border border-gray-300">
+            <table className="table-fixed w-full text-left divide-y divide-gray-500/20 bg-white ">
 
                 <thead className="">
                     <tr>
@@ -18,7 +18,7 @@ export function TableMini({data, columns}) {
                 </thead>
 
                 <tbody className="bg-white">
-                    {data.map((item, i) => {
+                    {data.slice(0,5).map((item, i) => {
                         return (
                             <tr key={i}>
                                 {columns.map(({ field, render }) => (
