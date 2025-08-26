@@ -1,4 +1,5 @@
 import pool from "../db-config.js";
+import { getUserIdByUsername } from "../utils/getUserIdByUsername.js";
 
 export const addToCart = async (req, res) => {
     const { product_id, quantity = 1 } = req.body;
@@ -185,7 +186,3 @@ export const buyProducts = async (req, res) => {
     }
 };
 
-const getUserIdByUsername = async (username) => {
-    const [rows] = await pool.execute("SELECT user_id FROM users WHERE name = ?", [username])
-    return rows.length > 0 ? rows[0].user_id : null
-}

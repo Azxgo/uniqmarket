@@ -3,8 +3,9 @@ import { useData } from "../hooks/useData";
 import { useCartContext } from "../context/cartContext";
 import { SkeletonProductPage } from "./skeletons/SkeletonProductPage";
 import { useLoad } from "../hooks/useLoad";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Puntuacion } from "../components/Puntuacion";
+import { Review } from "../components/Review";
 
 export default function ProductPage() {
     const { products } = useData()
@@ -13,12 +14,26 @@ export default function ProductPage() {
 
     const { loading } = useLoad()
 
+    const [avgRating, setAvgRating] = useState(0)
+
+    const [reviewOpen, setReviewOpen] = useState(false)
+
     const prod = products.find(prod => prod.product_id === Number(id))
 
     useEffect(() => {
         if (prod?.name) {
             document.title = `${prod.name} - Uniqmarket`;
         }
+
+        const fetchAvgRating = async () => {
+            if (!prod) return
+
+            const res = await fetch(`http://localhost:3000/rating/get/${prod.product_id}`);
+            const data = await res.json();
+            setAvgRating(data.avg_rating);
+        };
+
+        fetchAvgRating();
     }, [prod]);
 
     if (loading) {
@@ -41,12 +56,24 @@ export default function ProductPage() {
                     <span className="text-gray-400">SKU: {prod.sku}</span>
                     <h2 className="font-bold text-[30px]">${prod.price}</h2>
                     <p className="text-[20px]">Vendido por: {prod.vendor_name}</p>
-                    <Puntuacion />
-                    <button className="rounded-lg w-full bg-zinc-900 hover:bg-zinc-700 my-2 p-3 text-white cursor-pointer"
-                        onClick={() => addToCart(prod)}
-                    >
-                        Agregar al carrito
-                    </button>
+
+                    <div className="flex items-center gap-2">
+                        <Puntuacion average={avgRating} editable={false} /> <span>{avgRating}</span>
+                    </div>
+
+                    <div className="flex gap-2">
+                        <button className="rounded-lg w-full bg-zinc-900 hover:bg-zinc-700 my-2 p-3 text-white font-bold cursor-pointer"
+                            onClick={() => addToCart(prod)}
+                        >
+                            Agregar al carrito
+                        </button>
+                        <button
+                            onClick={() => setReviewOpen(!reviewOpen)}
+                            className="rounded-lg w-full bg-yellow-500 hover:bg-yellow-300 my-2 px-4 py-2 text-white font-bold cursor-pointer"
+                        >
+                            Enviar Puntuación
+                        </button>
+                    </div>
                     <div className="flex flex-col gap-2">
                         <h3 className="font-bold text-[20px] pb-1 border-b-2 border-black">Descripción</h3>
                         <p className="text-[18px]">
@@ -55,6 +82,14 @@ export default function ProductPage() {
                     </div>
                 </div>
             </div>
+
+            <Review
+            isOpen={reviewOpen}
+            onClose={() => setReviewOpen(false)}
+            product_id={prod.product_id}
+
+            />
+
         </div>
     )
 }
