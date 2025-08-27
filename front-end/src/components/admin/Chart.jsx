@@ -9,7 +9,7 @@ export function Chart({ orders }) {
 
     return (
         <div className="rounded-md bg-white">
-            <div className="flex gap-2 mb-3">
+            <div className="flex gap-2 mb-5">
                 <button onClick={() => setPeriod("day")} className="px-2 py-1 rounded bg-gray-200">Día</button>
                 <button onClick={() => setPeriod("week")} className="px-2 py-1 rounded bg-gray-200">Semana</button>
                 <button onClick={() => setPeriod("month")} className="px-2 py-1 rounded bg-gray-200">Mes</button>

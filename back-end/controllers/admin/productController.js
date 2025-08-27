@@ -74,3 +74,20 @@ export const deleteProduct = async (req, res) => {
     }
 }
 
+export const top5Products = async (req, res) => {
+    try {
+        const [rows] = await pool.query(
+            `SELECT p.name, p.brand, p.image_url, ROUND(AVG(pr.rating), 1) AS avg_rating, COUNT(pr.rating) AS total_reviews, (AVG(pr.rating) * LOG(1 + COUNT(pr.rating))) AS score
+            FROM products_ratings pr
+            JOIN products p ON pr.product_id = p.product_id
+            GROUP BY pr.product_id
+            ORDER BY score DESC
+            LIMIT 5;`
+        )
+
+        res.json(rows)
+    } catch (e) {
+        res.status(500).json({ e: "Error al obtener productos" })
+    }
+}
+

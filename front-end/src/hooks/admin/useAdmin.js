@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 
 export default function useAdmin() {
     const [products, setProducts] = useState([])
+    const [topProducts, setTopProducts] = useState([])
 
     const fetchAllProducts = async () => {
         try {
@@ -16,9 +17,23 @@ export default function useAdmin() {
         }
     }
 
+    const fetchTopProducts = async () => {
+        try {
+            const productsRes = await fetch("http://localhost:3000/admin/products/getTopProducts", {
+                credentials: "include"
+            })
+            const productsData = await productsRes.json();
+
+            setTopProducts(productsData);
+        } catch (error) {
+            console.error("Error fetching data", error);
+        }
+    }
+
     useEffect(() => {
         fetchAllProducts()
+        fetchTopProducts()
     }, [])
 
-    return { products, setProducts }
+    return { products, setProducts, topProducts }
 }

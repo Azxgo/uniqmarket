@@ -1,9 +1,14 @@
 import { useState } from "react";
 import { StarIcon } from "../icons/MiscIcons";
+import { useEffect } from "react";
 
-export function Puntuacion({ onChange, average = 0, editable = false }) {
+export function Puntuacion({ value = 0, onChange, average = 0, editable = false }) {
     const [hoverIndex, setHoverIndex] = useState(0)
     const [selectedIndex, setSelectedIndex] = useState(0)
+
+    useEffect(() => {
+        setSelectedIndex(value);
+    }, [value]);
 
     const handleClick = (star) => {
         if (!editable) return

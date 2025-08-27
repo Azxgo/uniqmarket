@@ -1,14 +1,15 @@
 import { MisceláneoIcon } from "../../icons/CategoryIcons";
 
-export function IndexCard({ name, value = 0 }) {
-
-    return (
-        <div className="flex flex-col rounded-md bg-white p-7 justify-center items-center">
-            <div className="flex gap-2 items-center">
-                <MisceláneoIcon size={40} />
-                <h1 className="text-2xl">{name}</h1>
-            </div>
-            <span className="text-xl">{value}</span>
+export function IndexCard({ name, value = 0, icon: Icon = MisceláneoIcon, color = "bg-gray-500" }) {
+  return (
+    <div className="flex flex-col rounded-md p-6 shadow-sm bg-white">
+      <div className="flex items-center gap-4">
+        <div className={`p-3 rounded-full ${color} text-white flex items-center justify-center`}>
+          <Icon size={30} />
         </div>
-    )
+        <h2 className="text-xl font-semibold text-gray-700">{name}</h2>
+      </div>
+      <span className="mt-4 text-3xl font-bold text-gray-900">{value}</span>
+    </div>
+  );
 }

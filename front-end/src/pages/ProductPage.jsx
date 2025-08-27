@@ -17,6 +17,7 @@ export default function ProductPage() {
     const [avgRating, setAvgRating] = useState(0)
 
     const [reviewOpen, setReviewOpen] = useState(false)
+    const [canReview, setCanReview] = useState(false)
 
     const prod = products.find(prod => prod.product_id === Number(id))
 
@@ -25,15 +26,24 @@ export default function ProductPage() {
             document.title = `${prod.name} - Uniqmarket`;
         }
 
-        const fetchAvgRating = async () => {
-            if (!prod) return
+        if (!prod) return
 
+        const fetchAvgRating = async () => {
             const res = await fetch(`http://localhost:3000/rating/get/${prod.product_id}`);
             const data = await res.json();
             setAvgRating(data.avg_rating);
         };
 
+        const checkPurchase = async () => {
+            const res = await fetch(`http://localhost:3000/rating/checkPurchase/${prod.product_id}`, {
+                credentials: "include"
+            })
+            const data = await res.json();
+            setCanReview(data.purchased)
+        }
+
         fetchAvgRating();
+        checkPurchase();
     }, [prod]);
 
     if (loading) {
@@ -68,10 +78,16 @@ export default function ProductPage() {
                             Agregar al carrito
                         </button>
                         <button
-                            onClick={() => setReviewOpen(!reviewOpen)}
+                            onClick={() => {
+                                if (canReview) {
+                                    setReviewOpen(!reviewOpen)
+                                } else {
+                                    alert("Solo puedes escribir reseñas de productos que has comprado");
+                                }
+                            }}
                             className="rounded-lg w-full bg-yellow-500 hover:bg-yellow-300 my-2 px-4 py-2 text-white font-bold cursor-pointer"
                         >
-                            Enviar Puntuación
+                            Escribir reseña
                         </button>
                     </div>
                     <div className="flex flex-col gap-2">
@@ -84,10 +100,9 @@ export default function ProductPage() {
             </div>
 
             <Review
-            isOpen={reviewOpen}
-            onClose={() => setReviewOpen(false)}
-            product_id={prod.product_id}
-
+                isOpen={reviewOpen}
+                onClose={() => setReviewOpen(false)}
+                product_id={prod.product_id}
             />
 
         </div>
