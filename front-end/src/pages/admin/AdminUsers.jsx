@@ -6,9 +6,10 @@ import { AdminSearchBar } from "../../components/admin/AdminSearchBar";
 import { Link } from "react-router-dom";
 import { userColumns as columns } from "../../utils/columns";
 import { useUsers } from "../../hooks/admin/useUsers";
+import { UserIcon } from "../../icons/AdminIcons";
 
 export default function AdminUsers() {
-    const { setTitle } = useAdminTitle()
+    const { setTitle, setIcon } = useAdminTitle()
 
     const { users, setUsers } = useUsers()
 
@@ -32,6 +33,7 @@ export default function AdminUsers() {
 
     useEffect(() => {
         setTitle("Usuarios");
+        setIcon(<UserIcon color={"white"} size={30} />)
     }, []);
 
     return (

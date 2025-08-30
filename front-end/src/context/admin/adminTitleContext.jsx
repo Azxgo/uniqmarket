@@ -10,8 +10,9 @@ export const useAdminTitle = () => {
 
 export function AdminTitleProvider({children}) {
     const [title, setTitle] = useState("")
+    const [icon, setIcon] = useState(null)
     return (
-        <AdminTitleContext.Provider value={{title, setTitle}}>
+        <AdminTitleContext.Provider value={{title, setTitle, icon, setIcon}}>
             {children}
         </AdminTitleContext.Provider>
     )

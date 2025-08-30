@@ -83,13 +83,13 @@ export function Table({ data, columns, onDelete, getId }) {
     }
 
     return (
-        <div>
+        <div className="bg-white px-6 py-2 shadow-md rounded-md">
             <div className="flex gap-2 p-2 items-center">
-                <p>Filtrar por: </p>
+                <p className="text-xl font-semibold">Filtrar por: </p>
                 {columns.filter(col => col.filterable).map(col => (
                     <div
                         key={col.field}
-                        className="px-3 py-1 border-1 border-gray-400 rounded-md">
+                        className="">
                         <DropdownMenu
                             isOpen={menuOptions === col.field}
                             onToggle={() => toggleMenu(col.field)}
@@ -125,12 +125,12 @@ export function Table({ data, columns, onDelete, getId }) {
                     </button>
                 </div>
             )}
-            <div className="overflow-x-auto">
+            <div className="bg-white rounded-md">
                 <table className="table-fixed w-full text-left divide-y divide-gray-500/20 bg-white rounded-md">
 
-                    <thead className="">
+                    <thead className="bg-gray-100">
                         <tr>
-                            <th className="px-1 py-2 text-center w-[40px]">
+                            <th className="px-2 py-3 text-center w-[40px]">
                                 <input
                                     type="checkbox"
                                     onChange={toggleSelectAll}
@@ -139,14 +139,14 @@ export function Table({ data, columns, onDelete, getId }) {
                             {columns.map(({ label, field, width, sortable }) => (
                                 <th
                                     key={field}
-                                    className={`px-1 py-2 ${width ?? ''} select-none`}
+                                    className={`px-2 py-3 ${width ?? ''} select-none text-gray-700 font-medium`}
                                     onClick={sortable ? () => handleSort(field) : undefined}
                                 >
                                     {label}
 
                                     {sortField === field &&
-                                        (sortDirection === "asc" ? " ▼" :
-                                            sortDirection === "desc" ? "▲" : "")
+                                        (sortDirection === "asc" ? "  ▼" :
+                                            sortDirection === "desc" ? "  ▲" : "")
                                     }
                                 </th>
                             ))}
@@ -159,15 +159,15 @@ export function Table({ data, columns, onDelete, getId }) {
                         {currentItems.map((item) => {
                             const id = getId(item)
                             return (
-                                <tr key={id}>
-                                    <td className="px-1 py-2 text-center">
+                                <tr key={id} className="odd:bg-white even:bg-gray-100">
+                                    <td className="px-2 py-3 text-center">
                                         <input
                                             type="checkbox"
                                             checked={selectedIds.includes(id)}
                                             onChange={() => toggleSelect(id)} />
                                     </td>
                                     {columns.map(({ field, render }) => (
-                                        <td key={field} className="px-1 py-2">
+                                        <td key={field} className="px-2 py-3">
                                             {render ? render(item) : item[field]}
                                         </td>
                                     ))}
@@ -193,7 +193,7 @@ export function Table({ data, columns, onDelete, getId }) {
                 </table>
             </div>
 
-            <div className="flex justify-between items-center mt-4 px-2">
+            <div className="flex justify-between items-center mt-4">
                 <div className="flex gap-2">
                     <span>Mostrar:</span>
                     {[10, 20, 30].map((amount) => (

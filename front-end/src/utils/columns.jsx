@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { formatter } from "./formatter";
+import { Puntuacion } from "../components/Puntuacion";
 
 export const productColumns = [
     {
@@ -20,7 +21,12 @@ export const productColumns = [
     { label: "Precio", field: "price", width: "w-[100px]", sortable: true, render: (p) => formatter.format(p.price) },
     { label: "Vendedor", field: "vendor_name", sortable: true, filterable: true },
     { label: "Stock", field: "stock", width: "w-[70px]", sortable: true },
-    { label: "Calificación", field: "rating", render: () => "0" },
+    {
+        label: "Calificación", field: "rating", render: (p) =>
+            <div className="flex items-center gap-2">
+                <Puntuacion average={p.avg_rating} editable={false} size={20}/> <span>{p.avg_rating ? p.avg_rating : "0"}</span>
+            </div>
+    },
 ]
 
 export const orderColumns = [
@@ -52,28 +58,28 @@ export const orderColumns = [
 ]
 
 export const userColumns = [
-        {
-            label: "Nombre", field: "name", sortable: true,
-            render: (u) => (
-                <div className="flex items-center gap-3">
-                    <Link to={`/admin/user/${u.user_id}`} className="truncate">
-                        {u.name}
-                    </Link>
-                </div>
-            )
-        },
-        { label: "Email", field: "email", sortable: true },
-        { label: "Rol", field: "role", sortable: true, filterable: true },
-        {
-            label: "Creado en",
-            field: "created_at",
-            sortable: true,
-            render: (user) => new Date(user.created_at).toLocaleDateString("es-CL", {
-                day: "2-digit",
-                month: "short",
-                year: "numeric",
-                hour: "2-digit",
-                minute: "2-digit"
-            })
-        }
-    ]
+    {
+        label: "Nombre", field: "name", sortable: true,
+        render: (u) => (
+            <div className="flex items-center gap-3">
+                <Link to={`/admin/user/${u.user_id}`} className="truncate">
+                    {u.name}
+                </Link>
+            </div>
+        )
+    },
+    { label: "Email", field: "email", sortable: true },
+    { label: "Rol", field: "role", sortable: true, filterable: true },
+    {
+        label: "Creado en",
+        field: "created_at",
+        sortable: true,
+        render: (user) => new Date(user.created_at).toLocaleDateString("es-CL", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        })
+    }
+]

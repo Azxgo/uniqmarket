@@ -2,8 +2,8 @@ import { AnimatePresence, motion } from "framer-motion";
 
 export function DropdownMenu({ isOpen, onToggle, label, children }) {
     return (
-        <div className="relative">
-            <button onClick={onToggle} className="cursor-pointer">
+        <div className="relative  ">
+            <button onClick={onToggle} className="cursor-pointer text-xl px-3 py-1 border-1 border-gray-400 hover:bg-gray-200 rounded-md transition-all duration-300">
                 {label}
             </button>
 

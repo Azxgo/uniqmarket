@@ -1,34 +1,65 @@
 import pool from "../db-config.js";
 import { getUserIdByUsername } from "../utils/getUserIdByUsername.js";
 
-export const addToCart = async (req, res) => {
-    const { product_id, quantity = 1 } = req.body;
-    if (!product_id) return res.status(400).json({ error: "Falta product_id" })
+export const getCart = async (req, res) => {
+    const userId = req.user ? await getUserIdByUsername(req.user.username) : null;
+    const sessionId = req.cartSessionId
 
-    const userId = req.user ? await getUserIdByUsername(req.user.username) : null
-    const sessionId = req.cartSessionId;
-
-    const [existingItems] = await pool.query(
-        `SELECT * FROM cart_items WHERE product_id = ? 
-        AND ${userId ? "user_id = ?" : "session_id = ?"}
-        LIMIT 1`,
-        [product_id, userId || sessionId]
-    );
-
-    if (existingItems.length > 0) {
-        await pool.execute(
-            `UPDATE cart_items SET quantity = quantity + ? WHERE id = ?`,
-            [quantity, existingItems[0].id]
-        )
-    } else {
-        await pool.execute(
-            `INSERT INTO cart_items (user_id, session_id, product_id, quantity)
-            VALUES (?, ?, ?, ?)`,
-            [userId, sessionId, product_id, quantity]
-        )
+    try {
+        const [items] = await pool.execute(
+            `SELECT ci.*, p.name, p.price, p.image_url , p.brand  
+            FROM cart_items ci
+            JOIN products p ON ci.product_id = p.product_id
+            WHERE ${userId ? "user_id = ?" : "session_id = ?"}`,
+            [userId || sessionId]
+        );
+        res.json({ cartItems: items })
+    } catch (e) {
+        console.error("Error en getCart:", e);
+        res.status(500).json({ error: "Error al obtener carrito" });
     }
+}
 
-    res.json({ success: true })
+export const addToCart = async (req, res) => {
+    const { product_id, quantity } = req.body;
+    if (!product_id || !quantity) return res.status(400).json({ error: "Faltan datos" })
+
+    try {
+        const userId = req.user ? await getUserIdByUsername(req.user.username) : null
+        const sessionId = req.cartSessionId;
+
+        const [items] = await pool.query(
+            `SELECT * FROM cart_items WHERE product_id = ? 
+            AND ${userId ? "user_id = ?" : "session_id = ?"}
+            LIMIT 1`,
+            [product_id, userId || sessionId]
+        )
+        if (items.length > 0) {
+            await pool.execute(
+                `UPDATE cart_items SET quantity = quantity + ? WHERE id = ?`,
+                [quantity, items[0].id]
+            )
+        } else {
+            await pool.execute(
+                `INSERT INTO cart_items (user_id, session_id, product_id, quantity)
+                VALUES (?, ?, ?, ?)`,
+                [userId, sessionId, product_id, quantity]
+            )
+        }
+
+        const [updatedItems] = await pool.execute(
+            `SELECT ci.*, p.name, p.price, p.image_url, p.brand
+             FROM cart_items ci
+             JOIN products p ON ci.product_id = p.product_id
+             WHERE ${userId ? "user_id = ?" : "session_id = ?"}`,
+            [userId || sessionId]
+        );
+
+        res.json({ cartItems: updatedItems })
+    } catch (e) {
+        console.error("Error en addToCart:", e);
+        res.status(500).json({ error: "Error al agregar al carrito" });
+    }
 }
 
 export const removeFromCart = async (req, res) => {
@@ -40,8 +71,8 @@ export const removeFromCart = async (req, res) => {
 
     try {
         const [rows] = await pool.execute(
-            `SELECT * FROM cart_items WHERE product_id = ? AND 
-            ${userId ? 'user_id = ?' : "session_id = ?"} 
+            `SELECT * FROM cart_items WHERE product_id = ? 
+            AND ${userId ? 'user_id = ?' : "session_id = ?"} 
             LIMIT 1`,
             [product_id, userId || sessionId]
         );
@@ -63,25 +94,19 @@ export const removeFromCart = async (req, res) => {
                 [item.id]
             )
         }
-        res.json({ success: true, message: "Cantidad actualizada correctamente" });
+
+        const [items] = await pool.execute(
+            `SELECT ci.*, p.name, p.price, p.image_url, p.brand
+             FROM cart_items ci
+             JOIN products p ON ci.product_id = p.product_id
+             WHERE ${userId ? "user_id = ?" : "session_id = ?"}`,
+            [userId || sessionId]
+        );
+        res.json({ cartItems: items });
     } catch (e) {
         console.error("Error al reducir cantidad:", e);
         res.status(500).json({ error: "Error al reducir cantidad del producto" });
     }
-}
-
-export const getCart = async (req, res) => {
-    const userId = req.user ? await getUserIdByUsername(req.user.username) : null;
-    const sessionId = req.cartSessionId
-
-    const [items] = await pool.execute(
-        `SELECT ci.*, p.name, p.price, p.image_url , p.brand  from cart_items ci
-        JOIN products p ON ci.product_id = p.product_id
-        WHERE ${userId ? "user_id = ?" : "session_id = ?"}`,
-        [userId || sessionId]
-    );
-
-    res.json({ items })
 }
 
 export const resetCart = async (req, res) => {
@@ -114,6 +139,10 @@ export const resetCart = async (req, res) => {
 export const buyProducts = async (req, res) => {
     const userId = req.user ? await getUserIdByUsername(req.user.username) : null;
     const sessionId = req.cartSessionId;
+
+    if (!userId) {
+        return res.status(401).json({ message: "Debes iniciar sesión para realizar una compra." })
+    }
 
     const connection = await pool.getConnection();
 
@@ -157,7 +186,7 @@ export const buyProducts = async (req, res) => {
         const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0)
 
         const [orderResult] = await connection.execute(
-            `INSERT INTO buy_orders (user_id, status, total) VALUES (?, 'pending', ?)`,
+            `INSERT INTO buy_orders (user_id, status, total) VALUES (?, 'pendiente', ?)`,
             [userId, total]
         )
 

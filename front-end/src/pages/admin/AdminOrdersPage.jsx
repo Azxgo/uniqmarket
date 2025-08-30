@@ -110,7 +110,7 @@ export default function AdminOrdersPage() {
                                 )}
 
                         </div>
-                        <div className="space-y-1">
+                        <div className="space-y-1 mt-3">
                             <button className="p-2 bg-zinc-800 rounded-md text-white">
                                 Actualizar
                             </button>

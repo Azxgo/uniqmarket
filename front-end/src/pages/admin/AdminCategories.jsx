@@ -4,9 +4,10 @@ import useCategories from "../../hooks/admin/useCategories";
 import { categoryIcons } from "../../utils/categoryIcons";
 import { MisceláneoIcon } from "../../icons/CategoryIcons";
 import CategoryModal from "../../components/admin/CategoryModal";
+import { CategoryIcon } from "../../icons/AdminIcons";
 
 export default function AdminCategories() {
-  const { setTitle } = useAdminTitle();
+  const { setTitle, setIcon } = useAdminTitle();
   const { categories, setCategories } = useCategories();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -14,6 +15,7 @@ export default function AdminCategories() {
 
   useEffect(() => {
     setTitle("Categorias");
+    setIcon(<CategoryIcon color={"white"} size={30} />)
   }, []);
 
   const handleEditClick = (cat) => {

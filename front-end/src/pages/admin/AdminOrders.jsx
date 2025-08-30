@@ -4,9 +4,10 @@ import { useAdminTitle } from "../../context/admin/AdminTitleContext"
 import useOrders from "../../hooks/admin/useOrders"
 import { AdminSearchBar } from "../../components/admin/AdminSearchBar";
 import { orderColumns as columns } from "../../utils/columns";
+import { OrderIcon } from "../../icons/AdminIcons";
 
 export default function AdminOrders() {
-    const { setTitle } = useAdminTitle()
+    const { setTitle, setIcon } = useAdminTitle()
 
     const { orders, setOrders } = useOrders()
 
@@ -30,6 +31,7 @@ export default function AdminOrders() {
 
     useEffect(() => {
         setTitle("Ordenes");
+        setIcon(<OrderIcon color={"white"} size={30} />)
     }, []);
 
     return (

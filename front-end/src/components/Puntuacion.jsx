@@ -2,7 +2,7 @@ import { useState } from "react";
 import { StarIcon } from "../icons/MiscIcons";
 import { useEffect } from "react";
 
-export function Puntuacion({ value = 0, onChange, average = 0, editable = false }) {
+export function Puntuacion({ value = 0, onChange, average = 0, editable = false, size = 25 }) {
     const [hoverIndex, setHoverIndex] = useState(0)
     const [selectedIndex, setSelectedIndex] = useState(0)
 
@@ -25,7 +25,7 @@ export function Puntuacion({ value = 0, onChange, average = 0, editable = false 
             {[1, 2, 3, 4, 5].map((star) => (
                 <StarIcon
                     key={star}
-                    size={28}
+                    size={size}
                     filled={star <= displayIndex}
                     className={`transition-colors duration-200 ${editable ? "cursor-pointer" : ""}`}
                     onMouseEnter={() => editable && setHoverIndex(star)}

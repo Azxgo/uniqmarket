@@ -73,7 +73,13 @@ export default function ProductPage() {
 
                     <div className="flex gap-2">
                         <button className="rounded-lg w-full bg-zinc-900 hover:bg-zinc-700 my-2 p-3 text-white font-bold cursor-pointer"
-                            onClick={() => addToCart(prod)}
+                            onClick={() => addToCart({
+                                product_id: prod.product_id,
+                                brand: prod.brand,
+                                name: prod.name,
+                                price: prod.price,
+                                image_url: prod.image_url
+                            })}
                         >
                             Agregar al carrito
                         </button>

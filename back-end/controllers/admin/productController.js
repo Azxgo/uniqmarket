@@ -3,11 +3,18 @@ import pool from "../../db-config.js"
 export const getAllProducts = async (req, res) => {
     try {
         const [rows] = await pool.execute(`
-            SELECT p.product_id, p.name, p.price, p.stock, p.image_url,
-            c.name AS category_name, v.name AS vendor_name
-            FROM products p
-            LEFT JOIN categories c ON p.category_id = c.category_id
-            LEFT JOIN vendors v ON p.vendor_id = v.vendor_id
+        SELECT p.product_id, p.name, p.price, p.stock, p.image_url,
+        pr.avg_rating,
+        c.name AS category_name,
+        v.name AS vendor_name
+        FROM products p
+        LEFT JOIN categories c ON p.category_id = c.category_id
+        LEFT JOIN vendors v ON p.vendor_id = v.vendor_id
+        LEFT JOIN (
+            SELECT product_id, ROUND(AVG(rating), 1) AS avg_rating
+            FROM products_ratings
+            GROUP BY product_id
+        ) pr ON p.product_id = pr.product_id;
             `)
         res.json(rows)
     } catch (e) {

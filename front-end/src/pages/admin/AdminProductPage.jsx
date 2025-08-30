@@ -1,8 +1,11 @@
+import { set } from "date-fns";
 import { useEffect } from "react";
 import { useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
+import { useAdminTitle } from "../../context/admin/AdminTitleContext";
 
 export default function AdminProductPage() {
+    const { setTitle } = useAdminTitle()
     const { id } = useParams()
     const navigate = useNavigate()
 
@@ -20,6 +23,7 @@ export default function AdminProductPage() {
 
     useEffect(() => {
         if (id) {
+            setTitle("Editar Producto")
             fetch(`http://localhost:3000/admin/products/get/${id}`, {
                 credentials: "include"
             })
@@ -37,6 +41,8 @@ export default function AdminProductPage() {
                         image_url: data.image_url || ""
                     })
                 })
+        } else {
+            setTitle("Crear Producto")
         }
     }, [id])
 

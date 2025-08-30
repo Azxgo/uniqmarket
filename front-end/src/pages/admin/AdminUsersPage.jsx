@@ -17,6 +17,7 @@ export default function AdminUsersPage() {
 
     useEffect(() => {
         if (id) {
+            setTitle("Editar Usuario");
             fetch(`http://localhost:3000/admin/users/get/${id}`, {
                 credentials: "include"
             })
@@ -64,7 +65,7 @@ export default function AdminUsersPage() {
     }
 
     useEffect(() => {
-        setTitle("Usuarios");
+        setTitle("Crear Usuario");
     }, []);
 
     return (

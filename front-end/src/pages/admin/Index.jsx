@@ -8,17 +8,21 @@ import { useUsers } from "../../hooks/admin/useUsers";
 import { Chart } from "../../components/admin/Chart";
 import useAdmin from "../../hooks/admin/useAdmin";
 import { StarIcon } from "../../icons/MiscIcons"
+import { LayoutIcon } from "../../icons/AdminIcons";
 
 
 export default function Index() {
-    const { setTitle } = useAdminTitle()
+    const { setTitle, setIcon } = useAdminTitle()
     const { orders, totalRenueves } = useOrders()
     const { users } = useUsers()
     const { topProducts } = useAdmin()
 
     useEffect(() => {
         setTitle("Dashboard")
+        setIcon(<LayoutIcon color="white" size={30} />)
     }, [])
+
+    const last5Orders = orders.sort((a, b) => new Date(b.order_date) - new Date(a.order_date)).slice(0, 5)
 
     return (
         <div className="">
@@ -65,7 +69,7 @@ export default function Index() {
                 <div className="flex flex-col rounded-md bg-white p-6 shadow-sm mb-4">
                     <h1 className="text-2xl font-semibold mb-2 text-gray-700 border-b border-gray-200 pb-2">Ultimas Ordenes</h1>
                     <TableMini
-                        data={orders}
+                        data={last5Orders}
                         columns={columns}
                     />
                 </div>
