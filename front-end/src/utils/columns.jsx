@@ -20,9 +20,9 @@ export const productColumns = [
     { label: "Categoría", field: "category_name", width: "w-[120px]", sortable: true, filterable: true },
     { label: "Precio", field: "price", width: "w-[100px]", sortable: true, render: (p) => formatter.format(p.price) },
     { label: "Vendedor", field: "vendor_name", sortable: true, filterable: true },
-    { label: "Stock", field: "stock", width: "w-[70px]", sortable: true },
+    { label: "Stock", field: "stock", width: "w-[80px]", sortable: true },
     {
-        label: "Calificación", field: "rating", render: (p) =>
+        label: "Calificación", field: "rating", sortable: true, render: (p) =>
             <div className="flex items-center gap-2">
                 <Puntuacion average={p.avg_rating} editable={false} size={20}/> <span>{p.avg_rating ? p.avg_rating : "0"}</span>
             </div>

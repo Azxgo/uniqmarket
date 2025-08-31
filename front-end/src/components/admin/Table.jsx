@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useSorter } from "../../hooks/admin/useSorter";
 import { usePagination } from "../../hooks/admin/usePagination";
 import { DropdownMenu } from "./DropdownMenu";
+import { ChevronLeftIcon, ChevronRightIcon, TrashIcon } from "../../icons/MiscIcons";
 
 export function Table({ data, columns, onDelete, getId }) {
     const [menuOptions, setMenuOptions] = useState(null)
@@ -85,7 +86,7 @@ export function Table({ data, columns, onDelete, getId }) {
     return (
         <div className="bg-white px-6 py-2 shadow-md rounded-md">
             <div className="flex gap-2 p-2 items-center">
-                <p className="text-xl font-semibold">Filtrar por: </p>
+                <p className="text-lg font-semibold">Filtrar por: </p>
                 {columns.filter(col => col.filterable).map(col => (
                     <div
                         key={col.field}
@@ -98,12 +99,12 @@ export function Table({ data, columns, onDelete, getId }) {
                             {(() => {
                                 const counts = getValueCounts(col.field);
                                 return Object.entries(counts).map(([value, count]) => (
-                                    <li key={value}>
+                                    <li key={value} className="flex justify-between hover:bg-gray-100 rounded-md transition-all duration-300">
                                         <button
                                             onClick={() => toggleFilter(col.field, value)}
-                                            className={`w-full text-left px-2 py-1 whitespace-nowrap hover:bg-gray-100
-                                            ${activeFilters[col.field]?.includes(value) ? 'bg-blue-100 font-semibold' : ''}`}>
-                                            {value} ({count})
+                                            className={`w-full text-lg text-left px-4 py-3 whitespace-nowrap rounded-md 
+                                            ${activeFilters[col.field]?.includes(value) ? 'bg-gray-100 font-semibold' : ''}`}>
+                                            {value} <span className="pl-1">({count})</span>
                                         </button>
                                     </li>
                                 ));
@@ -115,31 +116,34 @@ export function Table({ data, columns, onDelete, getId }) {
 
 
             {selectedIds.length > 0 && (
-                <div className="flex w-full mb-2 px-4 py-2 rounded-md justify-between bg-blue-200">
-                    <p>({selectedIds.length}) Elementos Seleccionados </p>
+                <div className="flex w-full mb-2 px-4 py-2 rounded-md justify-between bg-blue-200 items-center">
+                    <p className="text-lg select-none"><span>({selectedIds.length})</span> Elementos Seleccionados </p>
                     <button
                         onClick={handleBulkDelete}
-                        className="bg-red-500 text-white px-4 py-2 rounded"
+                        className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-400 cursor-pointer"
                     >
-
+                        <TrashIcon />
                     </button>
                 </div>
             )}
-            <div className="bg-white rounded-md">
-                <table className="table-fixed w-full text-left divide-y divide-gray-500/20 bg-white rounded-md">
+            <div className="bg-white rounded-lg">
+                <table className="table-fixed w-full text-left divide-y divide-gray-500/20 bg-white">
 
                     <thead className="bg-gray-100">
                         <tr>
                             <th className="px-2 py-3 text-center w-[40px]">
-                                <input
-                                    type="checkbox"
-                                    onChange={toggleSelectAll}
-                                    checked={currentItems.length > 0 && currentItems.every(item => selectedIds.includes(getId(item)))} />
+                                <div className="flex text-center justify-center">
+                                    <input
+                                        type="checkbox"
+                                        className="w-5 h-5"
+                                        onChange={toggleSelectAll}
+                                        checked={currentItems.length > 0 && currentItems.every(item => selectedIds.includes(getId(item)))} />
+                                </div>
                             </th>
                             {columns.map(({ label, field, width, sortable }) => (
                                 <th
                                     key={field}
-                                    className={`px-2 py-3 ${width ?? ''} select-none text-gray-700 font-medium`}
+                                    className={`px-2 py-3 ${width ?? ''} select-none text-gray-700 font-medium cursor-pointer`}
                                     onClick={sortable ? () => handleSort(field) : undefined}
                                 >
                                     {label}
@@ -161,10 +165,13 @@ export function Table({ data, columns, onDelete, getId }) {
                             return (
                                 <tr key={id} className="odd:bg-white even:bg-gray-100">
                                     <td className="px-2 py-3 text-center">
-                                        <input
-                                            type="checkbox"
-                                            checked={selectedIds.includes(id)}
-                                            onChange={() => toggleSelect(id)} />
+                                        <div className="flex text-center justify-center">
+                                            <input
+                                                type="checkbox"
+                                                className="w-5 h-5"
+                                                checked={selectedIds.includes(id)}
+                                                onChange={() => toggleSelect(id)} />
+                                        </div>
                                     </td>
                                     {columns.map(({ field, render }) => (
                                         <td key={field} className="px-2 py-3">
@@ -172,14 +179,14 @@ export function Table({ data, columns, onDelete, getId }) {
                                         </td>
                                     ))}
 
-                                    <td className="px-2 py-2 text-center">
+                                    <td className="px-2 py-2 text-center z-50">
                                         <DropdownMenu
                                             isOpen={menuOptions === id}
                                             onToggle={() => toggleMenu(id)}
                                             label="..."
                                         >
-                                            <li>
-                                                <button onClick={() => onDelete(id)}>
+                                            <li className="hover:bg-gray-100 px-3 py-3 transition-all duration-300">
+                                                <button className="cursor-pointer" onClick={() => onDelete(id)}>
                                                     Eliminar
                                                 </button>
                                             </li>
@@ -194,15 +201,15 @@ export function Table({ data, columns, onDelete, getId }) {
             </div>
 
             <div className="flex justify-between items-center mt-4">
-                <div className="flex gap-2">
-                    <span>Mostrar:</span>
+                <div className="flex gap-2 items-center">
+                    <span className="text-lg font-semibold">Mostrar:</span>
                     {[10, 20, 30].map((amount) => (
                         <button
                             key={amount}
                             onClick={() => changeItemsPerPage(amount)}
-                            className={`px-3 py-1 rounded border
-                                                ${itemsPer === amount
-                                    ? "bg-blue-500 text-white"
+                            className={`px-3 py-2 rounded-md border border-gray-400 cursor-pointer hover:bg-gray-200 transition-all duration-300
+                                    ${itemsPer === amount
+                                    ? "bg-gray-200"
                                     : "bg-white text-black"
                                 }`}
                         >
@@ -211,19 +218,23 @@ export function Table({ data, columns, onDelete, getId }) {
                     ))}
                 </div>
 
-                <div className="flex gap-2">
+                <div className="flex gap-3 items-center">
                     <button
-                        onClick={handlePrevious} disabled={currentPage === 1}
-                        className="px-3 py-1 rounded bg-gray-200 disabled:opacity-50"
+                        onClick={handlePrevious}
+                        disabled={currentPage === 1}
+                        className={`px-3 py-2 rounded-md border border-gray-400 ${currentPage === 1 ? '' : 'cursor-pointer opacity-100 hover:bg-gray-200'
+                            } opacity-50`}
                     >
-                        {"<"}
+                        <ChevronLeftIcon />
                     </button>
-                    <span>Página {currentPage} de {totalPages}</span>
+                    <span className="text-lg">Página {currentPage} de {totalPages}</span>
                     <button
-                        onClick={handleNext} disabled={currentPage === totalPages}
-                        className="px-3 py-1 rounded bg-gray-200 disabled:opacity-50"
+                        onClick={handleNext}
+                        disabled={currentPage === totalPages}
+                        className={`px-3 py-2 rounded-md border border-gray-400 ${currentPage === totalPages ? '' : 'cursor-pointer opacity-100 hover:bg-gray-200'
+                            } opacity-50`}
                     >
-                        {">"}
+                        <ChevronRightIcon />
                     </button>
                 </div>
             </div>
