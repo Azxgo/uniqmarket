@@ -24,7 +24,7 @@ export const productColumns = [
     {
         label: "Calificación", field: "rating", sortable: true, render: (p) =>
             <div className="flex items-center gap-2">
-                <Puntuacion average={p.avg_rating} editable={false} size={20}/> <span>{p.avg_rating ? p.avg_rating : "0"}</span>
+                <Puntuacion average={p.avg_rating} editable={false} size={20} /> <span>{p.avg_rating ? p.avg_rating : "0"}</span>
             </div>
     },
 ]
@@ -82,4 +82,13 @@ export const userColumns = [
             minute: "2-digit"
         })
     }
+]
+
+export const vendorColumns = [
+    {
+        label: "Vendor ID", field: "vendor_id",
+    },
+    { label: "Nombre", field: "name" },
+    { label: "Productos", field: "total_products" }
+
 ]

@@ -12,6 +12,7 @@ import { categoryRouter } from "./routers/admin/category.js";
 import { adminAuth } from "./middlewares/adminAuth.js";
 import { ratingRouter } from "./routers/rating.js";
 import { authMiddleware } from "./middlewares/auth.js";
+import { vendorRouter } from "./routers/admin/vendor.js";
 
 //Config
 dotenv.config();
@@ -29,6 +30,7 @@ app.use("/rating", authMiddleware, ratingRouter)
 app.use('/admin/products', adminAuth, adminProductRouter)
 app.use('/admin/users', adminAuth, userRouter)
 app.use('/admin/orders', adminAuth, orderRouter)
+app.use("/admin/vendors", adminAuth, vendorRouter)
 app.use('/admin/category', adminAuth, categoryRouter)
 
 app.listen(port, () => {

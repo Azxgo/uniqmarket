@@ -47,19 +47,15 @@ export const deleteCategory = async (req, res) => {
     const { id } = req.params
     try {
         const [products] = await pool.execute(
-            `SELECT COUNT (*) AS count FROM products WHERE category_id = ?`,
-            [id]
-        )
+            `SELECT COUNT (*) AS count FROM products WHERE category_id = ?`, [id])
 
         if (products[0].count > 0) {
             return res.status(400).json({ error: "No se puede eliminar: la categoría tiene productos." });
         }
 
         await pool.execute(
-            `DELETE FROM categories WHERE category_id = ?`,
-            [id]
-        )
-        res.json({ "mensaje": "Categoría eliminada" })
+            `DELETE FROM categories WHERE category_id = ?`, [id])
+        res.json({ mensaje: "Categoría eliminada" })
     } catch (e) {
         console.error(e)
         res.status(500).json({ "error": 'Error al eliminar categoría' })

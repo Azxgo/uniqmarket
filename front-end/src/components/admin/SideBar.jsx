@@ -1,6 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import { SideBarCard } from "./SideBarCard";
-import { CategoryIcon, ElipsisIcon, ExpandIcon, LayoutIcon, LogoutIcon, OrderIcon, ProductIcon, UserIcon } from "../../icons/AdminIcons";
+import { CategoryIcon, ElipsisIcon, ExpandIcon, LayoutIcon, LogoutIcon, OrderIcon, ProductIcon, User2Icon, UserIcon } from "../../icons/AdminIcons";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAuthContext } from "../../context/authContext";
@@ -19,12 +19,12 @@ export function SideBar({ sideNav, OpenSideNav }) {
                     className={`overflow-hidden transition-all duration-300
                             ${sideNav ? "w-full opacity-100 pl-2" : "w-0 opacity-0"}`}
                 >
-                    <h1 className="text-white whitespace-nowrap">Uniqmarket</h1>
+                    <h1 className="text-white text-lg font-semibold whitespace-nowrap">Uniqmarket</h1>
                 </div>
 
                 <div className="min-w-[60px] flex justify-center">
                     <button
-                        className="p-3 rounded-full transition-all"
+                        className="p-3 rounded-full transition-all cursor-pointer"
                         onClick={() => OpenSideNav(!sideNav)}
                     >
                         <ExpandIcon color={"white"} />
@@ -69,6 +69,15 @@ export function SideBar({ sideNav, OpenSideNav }) {
                 <SideBarCard icon={<UserIcon color={"white"} />} title={"Usuarios"} sideNav={sideNav} />
             </NavLink>
             <NavLink
+                to="/admin/vendors"
+                className={({ isActive }) =>
+                    `block transition-colors ${isActive ? "bg-zinc-700" : "hover:bg-zinc-700"
+                    }`
+                }
+            >
+                <SideBarCard icon={<UserIcon color={"white"} />} title={"Vendedores"} sideNav={sideNav} />
+            </NavLink>
+            <NavLink
                 to="/admin/categories"
                 className={({ isActive }) =>
                     `block transition-colors ${isActive ? "bg-zinc-700" : "hover:bg-zinc-700"
@@ -80,7 +89,9 @@ export function SideBar({ sideNav, OpenSideNav }) {
 
             <div className="flex bg-zinc-800 items-center h-[60px] mt-auto">
                 <div className="min-w-[60px] flex justify-center">
-                    <picture className="p-5 rounded-full bg-gray-600" />
+                    <picture className="p-2 rounded-full bg-zinc-600" >
+                        <User2Icon size={32} color={"white"} />
+                    </picture>
                 </div>
                 <div
                     className={`overflow-hidden transition-all duration-300

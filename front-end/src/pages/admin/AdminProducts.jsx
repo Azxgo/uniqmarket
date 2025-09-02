@@ -44,10 +44,10 @@ export default function AdminProducts() {
                     placeholder="Buscar Producto..."
                 />
                 <Link to={"/admin/product"}>
-                    <button className="px-3 py-2 text-white bg-zinc-500 rounded-md">+ Crear Producto</button>
+                    <button className="px-3 py-2 text-white bg-zinc-500 rounded-md hover:bg-zinc-400 cursor-pointer transition-all duration-300">+ Crear Producto</button>
                 </Link>
             </div>
-            <div className="">
+            <div className="mb-4">
                 <Table data={searchProducts}
                     columns={columns}
                     onDelete={deleteProduct}

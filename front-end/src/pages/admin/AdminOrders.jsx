@@ -35,7 +35,7 @@ export default function AdminOrders() {
     }, []);
 
     return (
-        <div>
+        <div className="flex flex-col gap-4">
             <div className="flex gap-2 justify-end">
                 <AdminSearchBar
                     searchTerm={searchTerm}
@@ -43,11 +43,13 @@ export default function AdminOrders() {
                     placeholder="Buscar ID"
                 />
             </div>
-            <Table
-                data={searchOrder}
-                columns={columns}
-                onDelete={deleteOrder}
-                getId={(ord) => ord.order_id} />
+            <div className="mb-4">
+                <Table
+                    data={searchOrder}
+                    columns={columns}
+                    onDelete={deleteOrder}
+                    getId={(ord) => ord.order_id} />
+            </div>
         </div>
     )
 }

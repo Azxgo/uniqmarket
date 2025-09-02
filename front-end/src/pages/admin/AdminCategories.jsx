@@ -5,6 +5,7 @@ import { categoryIcons } from "../../utils/categoryIcons";
 import { MisceláneoIcon } from "../../icons/CategoryIcons";
 import CategoryModal from "../../components/admin/CategoryModal";
 import { CategoryIcon } from "../../icons/AdminIcons";
+import { EntityModal } from "../../components/admin/EntityModal";
 
 export default function AdminCategories() {
   const { setTitle, setIcon } = useAdminTitle();
@@ -64,43 +65,59 @@ export default function AdminCategories() {
   };
 
   return (
-    <div className="flex flex-wrap bg-white justify-center items-center gap-6 py-4 rounded-md">
-      {categories.map((cat, i) => {
-        const IconComponent = categoryIcons[cat.category_name] || MisceláneoIcon;
+    <div className="p-3">
+      <div className="flex flex-wrap bg-white justify-center items-center gap-6 py-4 rounded-md shadow-md">
+        {categories.map((cat, i) => {
+          const IconComponent = categoryIcons[cat.category_name] || MisceláneoIcon;
 
-        return (
-          <div
-            key={i}
-            className="flex flex-col rounded-md shadow-md items-center justify-center w-full max-w-[200px] sm:max-w-[350px] p-4"
-          >
-            <div className="flex items-center justify-center w-22 h-22 bg-gray-300 rounded-full">
-              <IconComponent size={60} className="w-28 h-28 text-white" />
-            </div>
-            <div className="mt-2 font-medium text-center">{cat.category_name}</div>
-            <span className="text-sm text-gray-500">{cat.product_count} Productos</span>
-            <button
-              className="px-2 py-1 text-xs bg-blue-500 text-white rounded-md"
-              onClick={() => handleEditClick(cat)}
+          return (
+            <div
+              key={i}
+              className="flex flex-col rounded-md shadow-md items-center justify-center w-full max-w-[200px] sm:max-w-[350px] p-4
+            transform transition-transform duration-200 hover:scale-105 cursor-pointer hover:bg-zinc-100"
             >
-              Editar
-            </button>
-          </div>
-        );
-      })}
+              <div className="flex items-center justify-center w-22 h-22 bg-gray-300 rounded-full">
+                <IconComponent size={60} className="w-28 h-28 text-white" />
+              </div>
+              <div className="mt-2 font-medium text-center">{cat.category_name}</div>
+              <span className="text-sm text-gray-500">{cat.product_count} Productos</span>
+              <button
+                className="px-2 py-1 text-xs bg-zinc-500 hover:bg-zinc-300 text-white rounded-md"
+                onClick={() => handleEditClick(cat)}
+              >
+                Editar
+              </button>
+            </div>
+          );
+        })}
 
-      <div
-        className="flex flex-col rounded-md shadow-md items-center justify-center p-4 cursor-pointer hover:bg-gray-100"
-        onClick={handleAddClick}
-      >
-        <h1 className="text-2xl">+</h1>
+        <div
+          className="flex flex-col rounded-md shadow-md items-center justify-center p-4 cursor-pointer hover:bg-zinc-100"
+          onClick={handleAddClick}
+        >
+          <h1 className="text-2xl">+</h1>
+        </div>
+
+
+        {/* 
+        <CategoryModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          category={selectedCategory}
+          onSave={handleSave}
+        />
+        */}
+
+        <EntityModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          entity={selectedCategory}
+          entityType="Category"
+          nameKey="category_name"
+          onSave={handleSave}
+        />
+
       </div>
-
-      <CategoryModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        category={selectedCategory}
-        onSave={handleSave}
-      />
     </div>
   );
 }

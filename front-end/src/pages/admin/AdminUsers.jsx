@@ -27,7 +27,7 @@ export default function AdminUsers() {
         if (res.ok) {
             setUsers((prev) => prev.filter(user => user.user_id !== id))
         } else {
-            console.log("Producto eliminado");
+            console.log("Usuario eliminado");
         }
     }
 
@@ -37,7 +37,7 @@ export default function AdminUsers() {
     }, []);
 
     return (
-        <div>
+        <div className="flex flex-col gap-4">
             <div className="flex gap-2 justify-end">
                 <AdminSearchBar
                     searchTerm={searchTerm}
@@ -45,13 +45,15 @@ export default function AdminUsers() {
                     placeholder="Buscar Usuario..."
                 />
                 <Link to={"/admin/user"}>
-                    <button className="px-3 py-2 text-white bg-zinc-500 rounded-md">+ Crear Usuario</button>
+                    <button className="px-3 py-2 text-white bg-zinc-500 rounded-md hover:bg-zinc-400 cursor-pointer transition-all duration-300">+ Crear Usuario</button>
                 </Link>
             </div>
-            <Table data={searchUsers}
-                columns={columns}
-                onDelete={deleteUser}
-                getId={(item) => item.user_id} />
+            <div className="mb-4">
+                <Table data={searchUsers}
+                    columns={columns}
+                    onDelete={deleteUser}
+                    getId={(item) => item.user_id} />
+            </div>
         </div>
     )
 }

@@ -200,7 +200,7 @@ export function Table({ data, columns, onDelete, getId }) {
                 </table>
             </div>
 
-            <div className="flex justify-between items-center mt-4">
+            <div className="flex justify-between items-center mt-4 pb-2">
                 <div className="flex gap-2 items-center">
                     <span className="text-lg font-semibold">Mostrar:</span>
                     {[10, 20, 30].map((amount) => (

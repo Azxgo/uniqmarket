@@ -1,0 +1,10 @@
+import { Router } from "express";
+import { createVendor, deleteVendor, getAllVendors, getVendorById } from "../../controllers/admin/vendorController.js";
+
+export const vendorRouter = Router()
+
+vendorRouter.get("/getAll", getAllVendors)
+vendorRouter.get("/get/:id", getVendorById)
+vendorRouter.put("/update/:id")
+vendorRouter.post("/add", createVendor)
+vendorRouter.delete("/delete/:id", deleteVendor)
