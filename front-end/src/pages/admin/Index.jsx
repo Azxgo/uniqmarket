@@ -8,13 +8,15 @@ import { useUsers } from "../../hooks/admin/useUsers";
 import { Chart } from "../../components/admin/Chart";
 import useAdmin from "../../hooks/admin/useAdmin";
 import { StarIcon } from "../../icons/MiscIcons"
-import { LayoutIcon } from "../../icons/AdminIcons";
+import { LayoutIcon, MoneyIcon, OrdersIcon, ReviewsIcon, User2Icon } from "../../icons/AdminIcons";
+import { useRatings} from "../../hooks/admin/useRatings"
 
 
 export default function Index() {
     const { setTitle, setIcon } = useAdminTitle()
     const { orders, totalRenueves } = useOrders()
     const { users } = useUsers()
+    const { rating } = useRatings()
     const { topProducts } = useAdmin()
 
     useEffect(() => {
@@ -29,10 +31,10 @@ export default function Index() {
             <div className="grid grid-cols-[2fr_1fr] gap-4">
                 <div className="flex flex-col gap-4">
                     <div className="grid grid-cols-2 gap-4">
-                        <IndexCard name="Ganancias" value={`$${totalRenueves.toFixed(2)}`} />
-                        <IndexCard name="Ordenes" value={orders.length} />
-                        <IndexCard name="Usuarios" value={users.length} />
-                        <IndexCard name="Reseñas" />
+                        <IndexCard name="Ganancias" icon={MoneyIcon} value={`$${totalRenueves.toFixed(2)}`} />
+                        <IndexCard name="Ordenes" icon={OrdersIcon} value={orders.length} />
+                        <IndexCard name="Usuarios" icon={User2Icon} value={users.length} />
+                        <IndexCard name="Reseñas" icon={ReviewsIcon} value={rating.total_reviews} />
                     </div>
 
                     <div className="flex flex-col gap-4 rounded-md bg-white p-6 h-[405px] shadow-sm">

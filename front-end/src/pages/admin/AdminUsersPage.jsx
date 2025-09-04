@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
 import { useAdminTitle } from "../../context/admin/AdminTitleContext"
 import { useNavigate, useParams } from "react-router-dom"
+import { UserIcon } from "../../icons/AdminIcons"
 
 export default function AdminUsersPage() {
-    const { setTitle } = useAdminTitle()
+    const { setTitle, setIcon } = useAdminTitle()
 
     const { id } = useParams()
     const navigate = useNavigate()
@@ -30,7 +31,10 @@ export default function AdminUsersPage() {
                         role: data.role || ""
                     })
                 })
+        } else {
+            setTitle("Crear Usuario");
         }
+        setIcon(<UserIcon color={"white"} size={30} />)
     }, [id])
 
     const handleChange = (e) => {
@@ -64,9 +68,6 @@ export default function AdminUsersPage() {
         }
     }
 
-    useEffect(() => {
-        setTitle("Crear Usuario");
-    }, []);
 
     return (
         <div className="flex flex-col h-full w-full gap-6">

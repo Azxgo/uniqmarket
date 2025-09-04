@@ -5,20 +5,25 @@ export default function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const { login } = useAuthContext();
+    const [localLoading, setLocalLoading] = useState(false);
+    const { login, loading: contextLoading } = useAuthContext();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (contextLoading) return
+
         setError(null);
-        setLoading(true);
+        setLocalLoading(true);
         const result = await login(username, password);
-        setLoading(false);
+        setLocalLoading(false);
 
         if (!result) {
             setError("Usuario o contraseña incorrectos");
         }
     };
+
+
+    const disabled = localLoading || contextLoading;
 
     return (
         <div className="flex w-full justify-center bg-gray-50 h-screen items-center">
@@ -29,7 +34,7 @@ export default function Login() {
                 <h2 className="text-[30px] text-center font-bold">Iniciar Sesión</h2>
 
                 {error && <p className="text-center text-red-400">{error}</p>}
-                {loading && <p className="text-center text-blue-400">Cargando...</p>}
+                {localLoading && <p className="text-center text-blue-400">Cargando...</p>}
 
                 <div className="flex flex-col gap-2">
                     <label className="text-gray-600">Usuario:</label>
@@ -39,6 +44,7 @@ export default function Login() {
                         placeholder="Ingresa tu nombre de usuario..."
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
+                        disabled={disabled}
                     />
                 </div>
                 <div className="flex flex-col gap-2">
@@ -54,9 +60,9 @@ export default function Login() {
                 <button
                     className="bg-zinc-800 text-white p-2 rounded-md disabled:opacity-50 hover:bg-zinc-700 cursor-pointer"
                     type="submit"
-                    disabled={loading}
+                    disabled={disabled}
                 >
-                    {loading ? "Ingresando..." : "Iniciar sesión"}
+                    {localLoading ? "Ingresando..." : "Iniciar sesión"}
                 </button>
             </form>
             <title>Iniciar Sesión - Uniqmarket</title>

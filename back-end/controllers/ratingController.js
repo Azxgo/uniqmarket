@@ -91,3 +91,17 @@ export const checkPurcharse = async (req, res) => {
         res.status(500).json({ purchased: false });
     }
 }
+
+export const getAllRatings = async (req, res) => {
+    try {
+        const [result] = await pool.execute(`
+            SELECT COUNT(*) AS total_reviews FROM products_ratings
+            `)
+
+        const total_reviews = result[0].total_reviews || 0
+        res.json({ total_reviews })
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ error: "Error al obtener el total de reseñas" });
+    }
+}

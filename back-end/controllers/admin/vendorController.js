@@ -28,7 +28,7 @@ export const getVendorById = async (req, res) => {
         }
 
         const [itemsRows] = await pool.execute(`
-            SELECT product_id, image_url, vendor_id
+            SELECT product_id, name, image_url, vendor_id
             FROM products
             WHERE vendor_id = ?
             `, [id])
@@ -62,10 +62,16 @@ export const updateVendor = async (req, res) => {
     const { id } = req.params
     const { name } = req.body
     try {
-        await pool.execute(`
+        const [result] = await pool.execute(`
             UPDATE vendors SET name = ? 
             WHERE vendor_id = ?
             `, [name, id])
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: "Vendedor no encontrado" });
+        }
+
+        res.json({ message: 'Vendedor actualizado correctamente' });
     } catch (e) {
         console.error(e)
         res.status(500).json({ "error": 'Error al actualizar vendedor' })
@@ -76,7 +82,7 @@ export const deleteVendor = async (req, res) => {
     const { id } = req.params
     try {
         const [products] = await pool.execute(
-            `SELECT COUNT (*) AS count FROM products WHERE vendor_id = ?`, [id])
+            `SELECT COUNT(*) AS count FROM products WHERE vendor_id = ?`, [id])
 
         if (products[0].count > 0) {
             return res.status(400).json({ error: "No se puede eliminar: el vendedor tiene productos." });

@@ -6,6 +6,7 @@ import { AdminSearchBar } from "../../components/admin/AdminSearchBar";
 import { Link } from "react-router-dom";
 import { Table } from "../../components/admin/Table";
 import { EntityModal } from "../../components/admin/EntityModal";
+import { VendorIcon } from "../../icons/AdminIcons";
 
 export default function AdminVendors() {
     const { setTitle, setIcon } = useAdminTitle()
@@ -62,6 +63,7 @@ export default function AdminVendors() {
 
     useEffect(() => {
         setTitle("Vendedores");
+        setIcon(<VendorIcon color={"white"} size={30}/>)
     }, []);
 
 

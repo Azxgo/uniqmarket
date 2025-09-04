@@ -6,7 +6,7 @@ export function EntityModal
         onClose,
         entity,
         entityType = "entity",
-        nameKey="name",
+        nameKey = "name",
         onSave
     }) {
 
@@ -15,6 +15,13 @@ export function EntityModal
     useEffect(() => {
         setNewName(entity?.[nameKey] || "")
     }, [entity, nameKey])
+
+    const entityNames = {
+        vendors: { singular: "Vendedor", plural: "Vendedores" },
+        category: { singular: "Categoría", plural: "Categorías" },
+    }
+
+    const names = entityNames[entityType.toLowerCase()] || { singular: entityType, plural: entityType }
 
     const handleSave = () => {
         const id = entity ? entity[`${entityType.toLowerCase()}_id`] : null
@@ -25,7 +32,7 @@ export function EntityModal
 
     const handleDelete = async () => {
         if (!entity) return;
-        const confirmDelete = window.confirm(`¿Estás seguro de eliminar este ${entityType.toLowerCase()}?`);
+        const confirmDelete = window.confirm(`¿Estás seguro de eliminar este ${names.singular}?`);
         if (!confirmDelete) return
 
         try {
@@ -40,11 +47,11 @@ export function EntityModal
                 onSave(null, null, entity[`${entityType.toLowerCase()}_id`]);
                 onClose();
             } else {
-                alert(data.error || `No se pudo eliminar el ${entityType.toLowerCase()}`);
+                alert(data.error || `No se pudo eliminar el ${names.singular}`);
             }
         } catch (e) {
-            console.error(`Error al eliminar ${entityType.toLowerCase()}`, e);
-            alert(`Error al eliminar ${entityType.toLowerCase()}`);
+            console.error(`Error al eliminar ${names.singular}`, e);
+            alert(`Error al eliminar${names.singular}`);
         }
     }
 
@@ -55,7 +62,7 @@ export function EntityModal
             <div className="flex flex-col bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
                 <div className="flex items-center justify-between mb-4">
                     <h2 className="text-lg font-semibold">
-                        {entity ? `Editar ${entityType}` : `Nueva ${entityType}`}
+                        {entity ? `Editar ${names.singular}` : `Crear ${names.singular}`}
                     </h2>
                     <button className="px-4 py-2 rounded-md hover:bg-gray-300" onClick={onClose}>
                         X

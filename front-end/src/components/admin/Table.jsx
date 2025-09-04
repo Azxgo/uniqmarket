@@ -83,37 +83,40 @@ export function Table({ data, columns, onDelete, getId }) {
         })
     }
 
+    const hasFilterableColumns = columns.some(col => col.filterable)
+
     return (
         <div className="bg-white px-6 py-2 shadow-md rounded-md">
-            <div className="flex gap-2 p-2 items-center">
-                <p className="text-lg font-semibold">Filtrar por: </p>
-                {columns.filter(col => col.filterable).map(col => (
-                    <div
-                        key={col.field}
-                        className="">
-                        <DropdownMenu
-                            isOpen={menuOptions === col.field}
-                            onToggle={() => toggleMenu(col.field)}
-                            label={col.label}
-                        >
-                            {(() => {
-                                const counts = getValueCounts(col.field);
-                                return Object.entries(counts).map(([value, count]) => (
-                                    <li key={value} className="flex justify-between hover:bg-gray-100 rounded-md transition-all duration-300">
-                                        <button
-                                            onClick={() => toggleFilter(col.field, value)}
-                                            className={`w-full text-lg text-left px-4 py-3 whitespace-nowrap rounded-md 
+            {hasFilterableColumns && (
+                <div className="flex gap-2 p-2 items-center">
+                    <p className="text-lg font-semibold">Filtrar por: </p>
+                    {columns.filter(col => col.filterable).map(col => (
+                        <div
+                            key={col.field}
+                            className="">
+                            <DropdownMenu
+                                isOpen={menuOptions === col.field}
+                                onToggle={() => toggleMenu(col.field)}
+                                label={col.label}
+                            >
+                                {(() => {
+                                    const counts = getValueCounts(col.field);
+                                    return Object.entries(counts).map(([value, count]) => (
+                                        <li key={value} className="flex justify-between hover:bg-gray-100 rounded-md transition-all duration-300">
+                                            <button
+                                                onClick={() => toggleFilter(col.field, value)}
+                                                className={`w-full text-lg text-left px-4 py-3 whitespace-nowrap rounded-md 
                                             ${activeFilters[col.field]?.includes(value) ? 'bg-gray-100 font-semibold' : ''}`}>
-                                            {value} <span className="pl-1">({count})</span>
-                                        </button>
-                                    </li>
-                                ));
-                            })()}
-                        </DropdownMenu>
-                    </div>
-                ))}
-            </div>
-
+                                                {value} <span className="pl-1">({count})</span>
+                                            </button>
+                                        </li>
+                                    ));
+                                })()}
+                            </DropdownMenu>
+                        </div>
+                    ))}
+                </div>
+            )}
 
             {selectedIds.length > 0 && (
                 <div className="flex w-full mb-2 px-4 py-2 rounded-md justify-between bg-blue-200 items-center">

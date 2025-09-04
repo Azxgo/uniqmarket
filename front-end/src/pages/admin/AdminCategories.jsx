@@ -3,7 +3,6 @@ import { useAdminTitle } from "../../context/admin/AdminTitleContext";
 import useCategories from "../../hooks/admin/useCategories";
 import { categoryIcons } from "../../utils/categoryIcons";
 import { MisceláneoIcon } from "../../icons/CategoryIcons";
-import CategoryModal from "../../components/admin/CategoryModal";
 import { CategoryIcon } from "../../icons/AdminIcons";
 import { EntityModal } from "../../components/admin/EntityModal";
 
@@ -98,15 +97,6 @@ export default function AdminCategories() {
           <h1 className="text-2xl">+</h1>
         </div>
 
-
-        {/* 
-        <CategoryModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          category={selectedCategory}
-          onSave={handleSave}
-        />
-        */}
 
         <EntityModal
           isOpen={isModalOpen}

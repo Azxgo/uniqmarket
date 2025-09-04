@@ -1,10 +1,11 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { useAdminTitle } from "../../context/admin/AdminTitleContext"
 import { useEffect, useState } from "react"
+import { OrderIcon } from "../../icons/AdminIcons"
 
 
 export default function AdminOrdersPage() {
-    const { setTitle } = useAdminTitle()
+    const { setTitle, setIcon } = useAdminTitle()
 
     const { id } = useParams()
     const navigate = useNavigate()
@@ -41,11 +42,9 @@ export default function AdminOrdersPage() {
             setOrder(data)
         }
         fetchOrder();
-    }, [id])
-
-    useEffect(() => {
         setTitle("Ordenes");
-    }, [])
+        setIcon(<OrderIcon color={"white"} size={30} />)
+    }, [id])
 
     return (
         <div className="flex flex-col h-full w-full gap-6">
@@ -93,7 +92,7 @@ export default function AdminOrdersPage() {
                                 <ul>
                                     {order.items.map((item) => (
                                         <li key={item.product_id} className="flex justify-between my-2 border-b border-gray-300">
-                                            <div className="flex items-center gap-2">
+                                            <div className="flex items-center gap-3 py-2">
                                                 <img src={item.product_image} alt={item.product_name}
                                                     className="h-16" />
                                                 <span>{item.product_name}</span>

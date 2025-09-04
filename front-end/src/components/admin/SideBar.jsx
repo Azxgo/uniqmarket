@@ -1,6 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import { SideBarCard } from "./SideBarCard";
-import { CategoryIcon, ElipsisIcon, ExpandIcon, LayoutIcon, LogoutIcon, OrderIcon, ProductIcon, User2Icon, UserIcon } from "../../icons/AdminIcons";
+import { CategoryIcon, ElipsisIcon, ExpandIcon, LayoutIcon, LogoutIcon, OrderIcon, ProductIcon, User2Icon, UserIcon, VendorIcon } from "../../icons/AdminIcons";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAuthContext } from "../../context/authContext";
@@ -75,7 +75,7 @@ export function SideBar({ sideNav, OpenSideNav }) {
                     }`
                 }
             >
-                <SideBarCard icon={<UserIcon color={"white"} />} title={"Vendedores"} sideNav={sideNav} />
+                <SideBarCard icon={<VendorIcon color={"white"} />} title={"Vendedores"} sideNav={sideNav} />
             </NavLink>
             <NavLink
                 to="/admin/categories"

@@ -48,6 +48,7 @@ export const AuthProvider = ({ children }) => {
         if (res.ok) {
             setUser({ username });
             navigate(redirectTo || "/");
+            return true
         } else {
             console.error("Error de autenticación");
             return false;

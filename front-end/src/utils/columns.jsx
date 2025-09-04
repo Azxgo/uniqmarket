@@ -87,8 +87,15 @@ export const userColumns = [
 export const vendorColumns = [
     {
         label: "Vendor ID", field: "vendor_id",
+        render: (v) => (
+            <div className="flex items-center gap-3">
+                <Link to={`/admin/vendor/${v.vendor_id}`} className="truncate">
+                    {v.vendor_id}
+                </Link>
+            </div>
+        )
     },
     { label: "Nombre", field: "name" },
-    { label: "Productos", field: "total_products" }
+    { label: "Productos", field: "total_products", sortable: true }
 
 ]
