@@ -3,7 +3,7 @@ import pool from "../db-config.js";
 export const getAll = async (req, res) => {
     try {
         const [rows] = await pool.execute(`
-            SELECT p.product_id, p.brand, p.name, p.description, p.sku, p.price,
+            SELECT p.product_id, p.brand, p.name, p.stock, p.description, p.sku, p.price,
             p.category_id, p.image_url, v.name AS vendor_name
             FROM products p
             LEFT JOIN vendors v ON p.vendor_id = v.vendor_id`);

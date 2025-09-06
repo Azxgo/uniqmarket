@@ -10,7 +10,7 @@ import { Review } from "../components/Review";
 export default function ProductPage() {
     const { products } = useData()
     const { id } = useParams()
-    const { addToCart } = useCartContext();
+    const { addToCart, cartProducts } = useCartContext();
 
     const { loading } = useLoad()
 
@@ -19,7 +19,9 @@ export default function ProductPage() {
     const [reviewOpen, setReviewOpen] = useState(false)
     const [canReview, setCanReview] = useState(false)
 
-    const prod = products.find(prod => prod.product_id === Number(id))
+    const [stockLeft, setStockLeft] = useState(0);
+
+    const prod = products.find(prod => prod.product_id === Number(id));
 
     useEffect(() => {
         if (prod?.name) {
@@ -44,6 +46,9 @@ export default function ProductPage() {
 
         fetchAvgRating();
         checkPurchase();
+
+        const currentInCart = cartProducts.find(item => item.product.product_id === prod.product_id)?.quantity || 0;
+        setStockLeft(prod.stock - currentInCart);
     }, [prod]);
 
     if (loading) {
@@ -54,6 +59,8 @@ export default function ProductPage() {
         return <h1>No se ha encontrado el producto</h1>
     }
 
+
+    console.log("left", stockLeft)
     return (
         <div className="container mx-auto">
             <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-[550px_auto] gap-4">
@@ -72,17 +79,38 @@ export default function ProductPage() {
                     </div>
 
                     <div className="flex gap-2">
-                        <button className="rounded-lg w-full bg-zinc-900 hover:bg-zinc-700 my-2 p-3 text-white font-bold cursor-pointer"
-                            onClick={() => addToCart({
-                                product_id: prod.product_id,
-                                brand: prod.brand,
-                                name: prod.name,
-                                price: prod.price,
-                                image_url: prod.image_url
-                            })}
-                        >
-                            Agregar al carrito
-                        </button>
+                        {prod.stock > 0 ? (
+                            <button
+                                className="rounded-lg w-full bg-zinc-900 hover:bg-zinc-700 my-2 p-3 text-white font-bold cursor-pointer"
+                                onClick={() => {
+                                    if (stockLeft <= 0) {
+                                        alert(`Ya no puedes agregar más unidades.`);
+                                        return;
+                                    }
+                                    addToCart({
+                                        product_id: prod.product_id,
+                                        brand: prod.brand,
+                                        name: prod.name,
+                                        price: prod.price,
+                                        image_url: prod.image_url,
+                                        quantity: 1
+                                    });
+                                    setStockLeft(prev => prev - 1)
+
+                                }}
+                            >
+                                Agregar al carrito
+                            </button>
+                        ) :
+                            (
+                                <button
+                                    disabled
+                                    className="rounded-lg w-full bg-zinc-900 hover:bg-zinc-700 my-2 p-3 text-white font-bold opacity-50"
+                                >
+                                    Producto Agotado
+                                </button>
+                            )}
+
                         <button
                             onClick={() => {
                                 if (canReview) {
@@ -111,6 +139,6 @@ export default function ProductPage() {
                 product_id={prod.product_id}
             />
 
-        </div>
+        </div >
     )
 }

@@ -13,6 +13,7 @@ import { adminAuth } from "./middlewares/adminAuth.js";
 import { ratingRouter } from "./routers/rating.js";
 import { authMiddleware } from "./middlewares/auth.js";
 import { vendorRouter } from "./routers/admin/vendor.js";
+import pool from "./db-config.js";
 
 //Config
 dotenv.config();
@@ -33,7 +34,18 @@ app.use('/admin/orders', adminAuth, orderRouter)
 app.use("/admin/vendors", adminAuth, vendorRouter)
 app.use('/admin/category', adminAuth, categoryRouter)
 
-app.listen(port, () => {
-    console.log(`server listening on port http://localhost:${port}`)
-})
 
+async function start() {
+  try {
+    await pool.getConnection();
+    console.log("Conexión a DB lista ✅");
+    app.listen(port, () => {
+      console.log(`Servidor escuchando en http://localhost:${port}`);
+    });
+  } catch (err) {
+    console.error("No se pudo conectar a la DB:", err);
+    process.exit(1);
+  }
+}
+
+start();

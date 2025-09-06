@@ -7,7 +7,7 @@ export const getCart = async (req, res) => {
 
     try {
         const [items] = await pool.execute(
-            `SELECT ci.*, p.name, p.price, p.image_url , p.brand  
+            `SELECT ci.*, p.name, p.price, p.stock, p.image_url, p.brand  
             FROM cart_items ci
             JOIN products p ON ci.product_id = p.product_id
             WHERE ${userId ? "user_id = ?" : "session_id = ?"}`,
@@ -48,7 +48,7 @@ export const addToCart = async (req, res) => {
         }
 
         const [updatedItems] = await pool.execute(
-            `SELECT ci.*, p.name, p.price, p.image_url, p.brand
+            `SELECT ci.*, p.name, p.price, p.stock, p.image_url, p.brand
              FROM cart_items ci
              JOIN products p ON ci.product_id = p.product_id
              WHERE ${userId ? "user_id = ?" : "session_id = ?"}`,
@@ -96,7 +96,7 @@ export const removeFromCart = async (req, res) => {
         }
 
         const [items] = await pool.execute(
-            `SELECT ci.*, p.name, p.price, p.image_url, p.brand
+            `SELECT ci.*, p.name, p.price, p.stock, p.image_url, p.brand
              FROM cart_items ci
              JOIN products p ON ci.product_id = p.product_id
              WHERE ${userId ? "user_id = ?" : "session_id = ?"}`,

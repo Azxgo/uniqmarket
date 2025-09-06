@@ -116,16 +116,27 @@ export default function Shop() {
                         <div className="flex flex-wrap gap-7 justify-center mt-2 py-2">
                             {paginatedProducts.map((prod) => (
                                 <Link key={prod.product_id} to={`/product/${prod.product_id}`} className="cursor-pointer">
-                                    <div className="flex flex-col w-full max-w-[250px] h-full max-h-[420px] border border-gray-300 shadow-md rounded-lg transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg overflow-hidden">
+                                    <div className="flex flex-col w-full max-w-[250px] h-full max-h-[450px] border border-gray-300 shadow-md rounded-lg transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg overflow-hidden">
                                         <img
                                             src={prod.image_url}
                                             alt={`Imagen de ${prod.name}`}
                                             className="w-52 h-52 object-cover mx-auto"
                                         />
-                                        <div className="p-3 w-full max-w-[208px]">
-                                            <span className="text-gray-500">{prod.brand}</span>
-                                            <h2 className="h-[115px] text-ellipsis line-clamp-5 font-bold">{prod.name}</h2>
-                                            <span className="font-semibold text-lg">${prod.price}</span>
+                                        <div className="flex flex-col justify-between p-3 w-full max-w-[208px] h-full">
+                                            <div className="flex flex-col">
+                                                {prod.stock === 0 && (
+                                                    <span className="bg-red-600 p-1 text-white rounded-md font-semibold">
+                                                        Producto Agotado
+                                                    </span>
+                                                )}
+                                                <span className="text-gray-500">{prod.brand}</span>
+                                                <h2 className="h-[90px] text-ellipsis line-clamp-5 font-bold">
+                                                    {prod.name}
+                                                </h2>
+                                            </div>
+
+                                            {/* Precio siempre abajo */}
+                                            <span className="font-semibold text-lg mt-2">${prod.price}</span>
                                         </div>
                                     </div>
                                 </Link>

@@ -19,7 +19,8 @@ export const CartProvider = ({ children }) => {
                     brand: item.brand,
                     name: item.name,
                     price: item.price,
-                    image_url: item.image_url
+                    image_url: item.image_url,
+                    stock: item.stock
                 },
                 quantity: item.quantity
             })));
@@ -51,7 +52,8 @@ export const CartProvider = ({ children }) => {
                     brand: item.brand,
                     name: item.name,
                     price: item.price,
-                    image_url: item.image_url
+                    image_url: item.image_url,
+                    stock: item.stock
                 },
                 quantity: item.quantity
             })));
@@ -80,7 +82,8 @@ export const CartProvider = ({ children }) => {
                     brand: item.brand,
                     name: item.name,
                     price: item.price,
-                    image_url: item.image_url
+                    image_url: item.image_url,
+                    stock: item.stock
                 },
                 quantity: item.quantity
             })))
