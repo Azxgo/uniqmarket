@@ -20,7 +20,7 @@ export default function AdminVendorsPage() {
                 body: JSON.stringify({ name: vendor.name })
             })
             if (!res.ok) throw new Error("Error al actualizar el nombre");
-            alert("Estado actualizado correctamente");
+            alert("Vendedor actualizado correctamente");
             if (res.ok) {
                 navigate("/admin/vendors")
             }

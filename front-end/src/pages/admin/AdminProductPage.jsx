@@ -3,10 +3,14 @@ import { useEffect } from "react";
 import { useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { useAdminTitle } from "../../context/admin/AdminTitleContext";
+import { useCategories } from "../../hooks/admin/useCategories";
+import { useVendors } from "../../hooks/admin/useVendors";
 
 export default function AdminProductPage() {
     const { setTitle } = useAdminTitle()
     const { id } = useParams()
+    const { categories } = useCategories()
+    const { vendors } = useVendors()
     const navigate = useNavigate()
 
     const [formData, setFormData] = useState({
@@ -35,8 +39,8 @@ export default function AdminProductPage() {
                         price: data.price || "",
                         stock: data.stock || "",
                         sku: data.sku || "",
-                        description: data.description ||  "",
-                        category: data.category_id ||  "",
+                        description: data.description || "",
+                        category: data.category_id || "",
                         vendor: data.vendor_id || "",
                         image_url: data.image_url || ""
                     })
@@ -70,17 +74,18 @@ export default function AdminProductPage() {
 
         const res = await fetch(endpoint, {
             method,
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(parsedFormData)
         });
 
-        const data = await res.json()
-        console.log(data)
+        if (!res.ok) throw new Error("Error al guardar el producto");
+        alert(id ? "Producto actualizado correctamente" : "Producto creado correctamente");
 
         if (res.ok) {
-            navigate("/admin")
+            navigate("/admin/products")
         }
     }
 
@@ -127,12 +132,30 @@ export default function AdminProductPage() {
 
                         <div className="space-y-1">
                             <label htmlFor="category" className="block font-medium text-gray-700">Categoría</label>
-                            <input id="category" type="text" value={formData.category} onChange={handleChange} className="w-full border rounded-md px-3 py-2" />
+                            <select
+                                id="category"
+                                className="w-full border rounded-md px-3 py-2 appearance-none"
+                                value={formData?.category || ""}
+                                onChange={handleChange}
+                            >
+                                {categories.map((cat) => (
+                                    <option key={cat.category_id} value={cat.category_id}>{cat.category_name}</option>
+                                ))}
+                            </select>
                         </div>
 
                         <div className="space-y-1">
                             <label htmlFor="vendor" className="block font-medium text-gray-700">Vendedor</label>
-                            <input id="vendor" type="text" value={formData.vendor} onChange={handleChange} className="w-full border rounded-md px-3 py-2" />
+                            <select
+                                id="vendor"
+                                className="w-full border rounded-md px-3 py-2 appearance-none"
+                                value={formData.vendor}
+                                onChange={handleChange}
+                            >
+                                {vendors.map((ven) => (
+                                    <option key={ven.vendor_id} value={ven.vendor_id}>{ven.name}</option>
+                                ))}
+                            </select>
                         </div>
 
                         <div className="space-y-1">

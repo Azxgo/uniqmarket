@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useAdminTitle } from "../../context/admin/AdminTitleContext";
-import useCategories from "../../hooks/admin/useCategories";
 import { categoryIcons } from "../../utils/categoryIcons";
 import { MisceláneoIcon } from "../../icons/CategoryIcons";
 import { CategoryIcon } from "../../icons/AdminIcons";
 import { EntityModal } from "../../components/admin/EntityModal";
+import { useCategories } from "../../hooks/admin/useCategories";
 
 export default function AdminCategories() {
   const { setTitle, setIcon } = useAdminTitle();
@@ -81,7 +81,7 @@ export default function AdminCategories() {
               <div className="mt-2 font-medium text-center">{cat.category_name}</div>
               <span className="text-sm text-gray-500">{cat.product_count} Productos</span>
               <button
-                className="px-2 py-1 text-xs bg-zinc-500 hover:bg-zinc-300 text-white rounded-md"
+                className="px-2 py-1 text-xs bg-zinc-500 hover:bg-zinc-300 text-white rounded-md cursor-pointer"
                 onClick={() => handleEditClick(cat)}
               >
                 Editar

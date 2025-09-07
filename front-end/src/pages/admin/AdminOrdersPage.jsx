@@ -29,7 +29,6 @@ export default function AdminOrdersPage() {
         } catch (error) {
             alert(error.message);
         }
-
     }
 
     useEffect(() => {

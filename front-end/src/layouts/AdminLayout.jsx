@@ -1,10 +1,22 @@
-import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 import { SideBar } from "../components/admin/SideBar";
 import { AdminTitleProvider, useAdminTitle } from "../context/admin/AdminTitleContext";
+import { useAuth } from "../hooks/useAuth";
 
 function AdminLayoutContent({ sideNav, OpenSideNav }) {
     const { title, icon } = useAdminTitle()
+
+    const { authenticated, expired, setExpired } = useAuth()
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (expired) {
+            alert("Tu sesión ha expirado")
+            setExpired(false)
+            navigate("/login")
+        }
+    }, [expired])
 
     return (
         <div className="bg-gray-100">

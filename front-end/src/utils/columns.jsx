@@ -22,7 +22,7 @@ export const productColumns = [
     { label: "Vendedor", field: "vendor_name", sortable: true, filterable: true },
     { label: "Stock", field: "stock", width: "w-[80px]", sortable: true },
     {
-        label: "Calificación", field: "rating", sortable: true, render: (p) =>
+        label: "Calificación", field: "avg_rating", sortable: true, render: (p) =>
             <div className="flex items-center gap-2">
                 <Puntuacion average={p.avg_rating} editable={false} size={20} /> <span>{p.avg_rating ? p.avg_rating : "0"}</span>
             </div>

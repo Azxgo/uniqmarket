@@ -1,8 +1,18 @@
 import { Outlet } from "react-router-dom";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
+import { useAuth } from "../hooks/useAuth";
+import { useEffect } from "react";
 
 export function MainLayout() {
+    const { expired, setExpired } = useAuth()
+
+    useEffect(() => {
+        if (expired) {
+            alert("Tu sesión ha expirado.")
+            setExpired(false)
+        }
+    }, [expired])
     return (
         <div>
             <header>

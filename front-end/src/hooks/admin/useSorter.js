@@ -6,25 +6,32 @@ export function useSorter(data, initialSortField = null) {
     const [sortDirection, setSortDirection] = useState("none")
 
     const sortedData = useMemo(() => {
-        if (!sortField || sortDirection === "none") return data
+        if (!sortField || sortDirection === "none") return data;
 
-        const sorted = [...data].sort((a, b) => {
+        return [...data].sort((a, b) => {
             let aVal = a[sortField];
             let bVal = b[sortField];
 
-            const numeric = typeof aVal === "number" || typeof bVal === "number"
+            if (aVal == null && bVal == null) return 0;
+            if (aVal == null) return 1; 
+            if (bVal == null) return -1; 
 
-            if (numeric) {
-                return sortDirection === "asc" ? aVal - bVal : bVal - aVal
-            } else {
-                return sortDirection === "asc"
-                    ? String(aVal).localeCompare(String(bVal))
-                    : String(bVal).localeCompare(String(aVal))
+            const aNum = Number(aVal);
+            const bNum = Number(bVal);
+            const bothNumeric = !isNaN(aNum) && !isNaN(bNum);
+
+            if (bothNumeric) {
+                return sortDirection === "asc" ? aNum - bNum : bNum - aNum;
             }
-        });
 
-        return sorted
-    }, [data, sortField, sortDirection])
+            const A = String(aVal);
+            const B = String(bVal);
+
+            return sortDirection === "asc"
+                ? A.localeCompare(B)
+                : B.localeCompare(A);
+        });
+    }, [data, sortField, sortDirection]);
 
     const handleSort = (field) => {
         if (sortField === field) {

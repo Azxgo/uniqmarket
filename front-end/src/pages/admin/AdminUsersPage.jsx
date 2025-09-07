@@ -60,8 +60,8 @@ export default function AdminUsersPage() {
             body: JSON.stringify(formData)
         });
 
-        const data = await res.json()
-        console.log(data)
+        if (!res.ok) throw new Error("Error al guardar el Usuario");
+        alert(id ? "Usuario actualizado correctamente" : "Usuario creado correctamente");
 
         if (res.ok) {
             navigate("/admin/users")

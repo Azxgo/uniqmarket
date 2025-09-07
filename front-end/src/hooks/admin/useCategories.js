@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export default function useCategories() {
+export function useCategories() {
     const [categories, setCategories] = useState([])
 
     const fetchAllCategories = async () => {
