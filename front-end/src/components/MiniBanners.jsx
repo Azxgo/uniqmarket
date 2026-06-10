@@ -14,13 +14,15 @@ export function MiniBanners() {
                     <Link
                         key={index}
                         to={href}
-                        className="w-1/3 h-[80px] sm:h-[90px] md:h-[137px] rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow"
+                        className="w-1/3 aspect-[4/2] sm:aspect-[4/2] md:aspect-[6/2] rounded-lg
+                            overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow"
                     >
                         <img
                             src={minibanner.imgUrl}
                             alt={minibanner.imgAlt}
                             loading="lazy"
-                            className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                            className="w-full h-full object-cover
+                                transition-transform duration-300 hover:scale-105"
                         />
                     </Link>
                 );
