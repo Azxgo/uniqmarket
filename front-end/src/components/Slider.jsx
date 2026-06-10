@@ -1,8 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LeftArrow, RightArrow } from "../icons/NavBarIcons";
 
 export function Slider({ children }) {
     const [selectedIndex, setSelectedIndex] = useState(0);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const handleNext = () =>
         setSelectedIndex(prev => (prev < children.length - 1 ? prev + 1 : 0));
@@ -16,7 +21,9 @@ export function Slider({ children }) {
             
             {/* track */}
             <div
-                className="flex h-full transition-transform duration-500 ease-in-out"
+                className={`flex h-full ${
+                    mounted ? "transition-transform duration-500 ease-in-out" : ""
+                }`}
                 style={{ transform: `translateX(-${selectedIndex * 100}%)` }}
             >
                 {children.map((child, index) => {
@@ -32,10 +39,7 @@ export function Slider({ children }) {
                             className="w-full h-full flex-shrink-0"
                         >
                             <div className="w-full h-full">
-
-                                <div className="w-full h-full">
-                                    {child}
-                                </div>
+                                {child}
                             </div>
                         </a>
                     );
