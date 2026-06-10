@@ -20,7 +20,7 @@ export function MiniBanners() {
                         <img
                             src={minibanner.imgUrl}
                             alt={minibanner.imgAlt}
-                            className="object-cover
+                            className="w-full h-full object-cover
                                 transition-transform duration-300 hover:scale-105"
                                 
                         />

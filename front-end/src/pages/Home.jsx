@@ -18,7 +18,7 @@ export default function Home() {
 
             <Slider>
                 {banners.map((banner, index) => (
-                    <img key={index} src={banner.imgUrl} alt={banner.imgAlt} className=" object-cover" />
+                    <img key={index} src={banner.imgUrl} alt={banner.imgAlt} className="w-full h-full object-cover" />
                 ))}
             </Slider>
 
