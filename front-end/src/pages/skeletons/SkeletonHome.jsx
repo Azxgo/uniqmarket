@@ -5,9 +5,9 @@ export function SkeletonHome() {
             <div className="w-full h-[180px] sm:h-[220px] md:h-[280px] lg:h-[320px] bg-gray-300 rounded-xl" />
 
             <div className="flex gap-3">
-                <div className="flex-1 h-[70px] sm:h-[90px] bg-gray-300 rounded-lg" />
-                <div className="flex-1 h-[70px] sm:h-[90px] bg-gray-300 rounded-lg" />
-                <div className="flex-1 h-[70px] sm:h-[90px] bg-gray-300 rounded-lg" />
+                <div className="flex-1 h-[80px] sm:h-[90px] md:h-[137px] bg-gray-300 rounded-lg" />
+                <div className="flex-1 h-[80px] sm:h-[90px] md:h-[137px] bg-gray-300 rounded-lg" />
+                <div className="flex-1 h-[80px] sm:h-[90px] md:h-[137px] bg-gray-300 rounded-lg" />
             </div>
 
             <div className="h-5 sm:h-6 md:h-8 w-40 sm:w-56 md:w-72 bg-gray-300 rounded mx-auto" />
