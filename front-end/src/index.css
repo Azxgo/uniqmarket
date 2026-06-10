@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+@import "tailwindcss";
+
+body {
+  font-family: "Lato", sans-serif;
+}
+
+    /* Personalizar la barra de desplazamiento */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px; 
+    }
+
+    /* Personalizar el fondo de la barra de desplazamiento */
+    ::-webkit-scrollbar-track {
+      background-color: #e6e6e6; 
+      border-radius: 10px; 
+    }
+
+    /* Personalizar la parte deslizante de la barra de desplazamiento */
+    ::-webkit-scrollbar-thumb {
+      background-color: #b3b3b3;
+      border-radius: 10px;
+      border: 3px solid #c2c2c2; 
+    }
+
+    /* Cuando el usuario pasa el mouse sobre la parte deslizante */
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: #444; 
+    }

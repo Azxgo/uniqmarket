@@ -1,0 +1,19 @@
+import { Link } from "react-router-dom";
+
+export default function NotFound() {
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center gap-4">
+      <h1 className="text-6xl font-bold">404</h1>
+      <p className="text-xl text-gray-500">
+        La página que buscas no existe
+      </p>
+
+      <Link
+        to="/"
+        className="px-6 py-3 bg-zinc-900 text-white rounded-lg hover:bg-zinc-700"
+      >
+        Volver al inicio
+      </Link>
+    </div>
+  );
+}
