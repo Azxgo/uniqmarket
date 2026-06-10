@@ -21,8 +21,9 @@ export function MiniBanners() {
                             src={minibanner.imgUrl}
                             alt={minibanner.imgAlt}
                             loading="lazy"
-                            className="w-full h-full object-cover
+                            className=" object-cover
                                 transition-transform duration-300 hover:scale-105"
+                            onLoad={(e) => e.currentTarget.classList.add("loaded")}
                         />
                     </Link>
                 );
