@@ -2,7 +2,7 @@ export function SkeletonHome() {
     return (
         <div className="max-w-7xl mx-auto px-4 flex flex-col gap-8 animate-pulse">
 
-            <div className="w-full h-[180px] sm:h-[220px] md:h-[280px] lg:h-[320px] bg-gray-300 rounded-xl" />
+            <div className="w-full aspect-[16/6] sm:aspect-[16/5] md:aspect-[16/4] lg:aspect-[11/3] bg-gray-300 rounded-xl" />
 
             <div className="flex gap-3">
                 <div className="flex-1 w-1/3 aspect-[4/2] sm:aspect-[4/2] md:aspect-[6/2] bg-gray-300 rounded-lg" />
