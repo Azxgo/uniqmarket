@@ -1,1 +1,0 @@
-import{r as t}from"./index-CFohnyHR.js";function d(o=1e3){const[r,n]=t.useState(!0);return t.useEffect(()=>{const e=()=>{const a=setTimeout(()=>{n(!1)},1e3);return()=>clearTimeout(a)};return document.readyState==="complete"?e():window.addEventListener("load",e),()=>{window.removeEventListener("load",e)}},[o]),{loading:r}}export{d as u};

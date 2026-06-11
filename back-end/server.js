@@ -35,7 +35,6 @@ app.use("/api/admin/users", adminAuth, userRouter)
 app.use("/api/admin/orders", adminAuth, orderRouter)
 app.use("/api/admin/vendors", adminAuth, vendorRouter)
 app.use("/api/admin/category", adminAuth, categoryRouter)
-console.log("BACKEND VERSION 2.0 CART LOADED");
 
 async function start() {
   try {
