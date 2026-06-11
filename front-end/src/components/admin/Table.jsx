@@ -189,7 +189,7 @@ export function Table({ data, columns, onDelete, getId, loading }) {
                                         </div>
                                     </td>
                                     {columns.map(({ field, render }) => (
-                                        <td key={field} className="px-2 py-3">
+                                        <td key={field} className="truncate px-2 py-3">
                                             {render ? render(item) : item[field]}
                                         </td>
                                     ))}
