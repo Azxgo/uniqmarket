@@ -15,7 +15,9 @@ export default function Index() {
     const { setTitle, setIcon } = useAdminTitle()
     const { orders, totalRenueves } = useOrders()
     const { users } = useUsers()
-    const { topProducts } = useAdmin()
+    const { topProducts,  ratings } = useAdmin()
+
+   
 
     useEffect(() => {
         setTitle("Dashboard")
@@ -32,7 +34,7 @@ export default function Index() {
                         <IndexCard name="Ganancias" icon={MoneyIcon} value={`$${totalRenueves.toFixed(2)}`} />
                         <IndexCard name="Ordenes" icon={OrdersIcon} value={orders.length} />
                         <IndexCard name="Usuarios" icon={User2Icon} value={users.length} />
-                        <IndexCard name="Reseñas" icon={ReviewsIcon} value={rating.total_reviews} />
+                        <IndexCard name="Reseñas" icon={ReviewsIcon} value={ratings.total_reviews} />
                     </div>
 
                     <div className="flex flex-col gap-4 rounded-md bg-white p-6 h-[405px] shadow-sm">

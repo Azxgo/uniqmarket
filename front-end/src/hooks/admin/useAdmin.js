@@ -5,6 +5,8 @@ export default function useAdmin() {
     const [topProducts, setTopProducts] = useState([])
     const [isLoading, setIsLoading] = useState(true)
 
+    const [ratings, setRatings] = useState({ total_reviews: 0 });
+
     const fetchAllProducts = async () => {
         try {
             setIsLoading(true);
@@ -34,10 +36,23 @@ export default function useAdmin() {
         }
     }
 
+    const fetchRatings = async () => {
+        try {
+            const res = await fetch("https://uniqmarket.onrender.com/api/rating/getAll", {
+                credentials: "include"
+            });
+            const data = await res.json();
+            setRatings(data);
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
     useEffect(() => {
         fetchAllProducts()
         fetchTopProducts()
+        fetchRatings();
     }, [])
 
-    return { products, setProducts, topProducts, isLoading }
+    return { products, setProducts, topProducts, isLoading, ratings }
 }
