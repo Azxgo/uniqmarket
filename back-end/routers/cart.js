@@ -5,8 +5,8 @@ import { addToCart, buyProducts, getCart, removeFromCart, resetCart } from "../c
 
 export const cartRouter = Router()
 
-cartRouter.use(authMiddleware);
 cartRouter.use(cartSessionMiddleware);
+cartRouter.use(authMiddleware);
 
 cartRouter.post("/add", addToCart)
 cartRouter.post("/remove", removeFromCart)
