@@ -6,6 +6,7 @@ export const register = async (req, res) => {
     const { username, email, password } = req.body
     const hashedPassword = await bcrypt.hash(password, 10)
 
+
     try {
         const { rows: existingUser } = await pool.query(
             "SELECT * FROM users where name = $1 or email = $2",

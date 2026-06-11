@@ -23,7 +23,7 @@ export default function useAdmin() {
 
     const fetchTopProducts = async () => {
         try {
-            const productsRes = await fetch("https://uniqmarket.onrender.com/api/dmin/products/getTopProducts", {
+            const productsRes = await fetch("https://uniqmarket.onrender.com/api/admin/products/getTopProducts", {
                 credentials: "include"
             })
             const productsData = await productsRes.json();

@@ -32,14 +32,6 @@ export const addToCart = async (req, res) => {
         const userId = req.user ? await getUserIdByUsername(req.user.username) : null
         const sessionId = req.cartSessionId;
 
-console.log("🧷 SESSION DEBUG:");
-console.log("sessionId raw:", req.cartSessionId);
-console.log("type:", typeof req.cartSessionId);
-
-console.log("🔎 buscando item con:");
-console.log("product_id:", product_id);
-console.log("sessionId usado:", sessionId);
-
         const { rows: items } = await pool.query(
             `SELECT * FROM cart_items WHERE product_id = $1
             AND ${userId ? "user_id = $2" : "session_id = $2"}
