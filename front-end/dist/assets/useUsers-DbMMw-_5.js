@@ -1,1 +1,0 @@
-import{r as s}from"./index-C1fXyUAW.js";function l(){const[a,e]=s.useState([]),[o,t]=s.useState(!0),c=async()=>{try{t(!0);const n=await(await fetch("http://localhost:3000/admin/users/getAll",{credentials:"include"})).json();e(n)}catch(r){console.error("Error fetching data",r)}finally{t(!1)}};return s.useEffect(()=>{c()},[]),{users:a,setUsers:e,isLoading:o}}export{l as u};
