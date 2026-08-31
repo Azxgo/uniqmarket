@@ -1,0 +1,65 @@
+import { useState, useEffect } from "react";
+import { apiClient } from "../config/apiClient";
+
+export function useData() {
+    const [products, setProducts] = useState([]);
+    const [categories, setCategories] = useState([]);
+
+    const [randomProds, setRandomProds] = useState([])
+
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setIsLoading(true);
+                const [productsRes, categoriesRes] = await Promise.all([
+                    apiClient("/api/products/products"),
+                    apiClient("/api/products/categories")
+                ]);
+
+                if (!productsRes.ok || !categoriesRes.ok) {
+                    throw new Error("Error cargando datos principales");
+                }
+
+                const [productsData, categoriesData] = await Promise.all([
+                    productsRes.json(),
+                    categoriesRes.json()
+                ]);
+
+                setProducts(productsData);
+                setCategories(categoriesData);
+            } catch (err) {
+                console.error(err);
+                setError(err.message);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
+
+
+    useEffect(() => {
+        const fetchRandom = async () => {
+            try {
+                setIsLoading(true);
+                const res = await apiClient("/api/products/rand");
+                if (!res.ok) return;
+                const data = await res.json();
+                setRandomProds(data);
+            } catch (e) {
+                console.warn("Random products no disponibles");
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchRandom();
+    }, []);
+
+    return {
+        products, categories, randomProds, isLoading, error
+    };
+}
